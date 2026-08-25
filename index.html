@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新店チャート手配台帳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDF3F6;
+    --card:#FFFFFF;
+    --ink:#5B4A52;
+    --muted:#B99AA6;
+    --line:#F5DCE4;
+    --chip-empty:#FAECEF;
+    --red:#F2A6B4;
+    --red-text:#C05C72;
+    --teal:#8FD8C8;
+    --teal-text:#3E9683;
+    --amber:#FAD08A;
+    --amber-text:#C98A3A;
+    --shadow-line:#00000010;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Zen Maru Gothic', sans-serif;
+    padding:32px 20px 60px;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+
+  /* header */
+  .header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    border-bottom:2px dashed var(--line);
+    padding-bottom:14px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .header h1{
+    font-family:'Kiwi Maru', serif;
+    font-weight:700;
+    font-size:26px;
+    margin:0 0 4px;
+    letter-spacing:.03em;
+  }
+  .header p{
+    margin:0;
+    font-size:13px;
+    color:var(--muted);
+    font-family:'Quicksand', sans-serif;
+  }
+  .stamp{
+    font-family:'Kiwi Maru', serif;
+    font-weight:500;
+    font-size:13px;
+    color:var(--red-text);
+    background:var(--chip-empty);
+    border:2px solid var(--red);
+    border-radius:20px;
+    padding:6px 16px;
+    transform:rotate(-4deg);
+    white-space:nowrap;
+  }
+
+  /* inventory */
+  .section-title{
+    font-family:'Kiwi Maru', serif;
+    font-size:15px;
+    font-weight:700;
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-title::before{
+    content:"";
+    width:6px;height:6px;
+    background:var(--ink);
+    display:inline-block;
+  }
+  .depot-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .depot-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+  }
+  .depot-card .name{font-size:12px;color:var(--muted);margin-bottom:6px;font-family:'Quicksand', sans-serif;}
+  .depot-card .stockrow{display:flex;align-items:center;gap:8px;}
+  .depot-card input{
+    width:56px;font-size:18px;font-weight:700;
+    font-family:'Quicksand', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:2px 0;
+  }
+  .depot-card input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .depot-card .alloc{font-size:11px;color:var(--muted);margin-top:6px;}
+  .depot-card .alloc b{color:var(--ink);}
+  .depot-card .alloc.warn b{color:var(--red-text);}
+
+  .totals-bar{
+    display:flex;gap:18px;flex-wrap:wrap;
+    font-family:'Quicksand', sans-serif;
+    font-size:13px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:10px 16px;
+    margin-bottom:30px;
+  }
+  .totals-bar span b{font-size:16px;}
+
+  /* store cards */
+  .store-card{
+    position:relative;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .store-top{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    flex-wrap:wrap;gap:10px;
+    margin-bottom:12px;
+  }
+  .store-name-block .badge{
+    display:inline-block;
+    font-family:'Quicksand', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:12px;
+    margin-bottom:6px;
+  }
+  .badge.urgent{background:var(--red);color:var(--red-text);}
+  .badge.soon{background:var(--amber);color:var(--amber-text);}
+  .badge.ok{background:var(--teal);color:var(--teal-text);}
+  .badge.tbd{background:var(--chip-empty);color:var(--muted);}
+  .store-name-block h3{
+    font-family:'Kiwi Maru', serif;
+    font-size:18px;margin:0 0 4px;
+  }
+  .dates{font-size:12px;color:var(--muted);font-family:'Quicksand', sans-serif;}
+
+  .depot-select{
+    font-size:12px;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:5px 8px;
+    background:#fff;
+    color:var(--ink);
+  }
+
+  .progress-block{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:12px;}
+  .progress-row{display:flex;flex-direction:column;gap:6px;}
+  .progress-row .label{font-size:11px;color:var(--muted);font-family:'Quicksand', sans-serif;letter-spacing:.05em;}
+  .chips{display:flex;gap:6px;}
+  .sample-meta{display:flex;gap:8px;margin-top:2px;}
+  .mini-input{
+    font-size:11px;
+    font-family:'Zen Maru Gothic', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:2px 2px;width:110px;
+  }
+  .mini-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .mini-input::placeholder{color:var(--muted);}
+  .mini-select{
+    font-size:11px;
+    font-family:'Zen Maru Gothic', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:2px 2px;width:110px;
+  }
+  .mini-select:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .alloc-slots{display:flex;gap:8px;align-items:center;margin-top:2px;flex-wrap:wrap;}
+  .alloc-slot{display:flex;gap:4px;align-items:center;}
+  .qty-input{
+    width:32px;font-size:11px;
+    font-family:'Quicksand', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:2px 2px;text-align:center;
+  }
+  .qty-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .alloc-total{
+    font-size:11px;font-family:'Quicksand', sans-serif;font-weight:600;
+    color:var(--teal-text);
+  }
+  .alloc-total.mismatch{color:var(--amber-text);}
+  .chip{
+    width:22px;height:22px;
+    border:1.5px solid var(--line);
+    background:var(--chip-empty);
+    cursor:pointer;
+    transition:background .1s, transform .1s;
+  }
+  .chip.circle{border-radius:50%;}
+  .chip.square{border-radius:5px;}
+  .chip.diamond{transform:rotate(45deg);}
+  .chip.diamond.on{transform:rotate(45deg) scale(1);}
+  .chip.on.circle{background:var(--teal);border-color:var(--teal);}
+  .chip.on.diamond{background:var(--red);border-color:var(--red);}
+  .chip.on.square{background:var(--amber);border-color:var(--amber);}
+  .chip:hover{transform:scale(1.1);}
+  .chip.diamond:hover{transform:rotate(45deg) scale(1.1);}
+
+  .status-note-row{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
+  }
+  .status-label{
+    font-family:'Quicksand', sans-serif;
+    font-size:12px;font-weight:700;
+  }
+  .status-label.done{color:var(--teal-text);}
+  .status-label.partial{color:var(--amber-text);}
+  .status-label.none{color:var(--muted);}
+
+  .note-input{
+    flex:1;min-width:160px;
+    font-size:12px;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:4px 2px;
+  }
+  .note-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+
+  .complete-stamp{
+    position:absolute;
+    top:14px;right:14px;
+    font-family:'Kiwi Maru', serif;
+    font-weight:500;
+    font-size:18px;
+    color:var(--teal-text);
+    background:#fff;
+    border:2px solid var(--teal);
+    border-radius:50%;
+    width:56px;height:56px;
+    display:flex;align-items:center;justify-content:center;
+    transform:rotate(10deg);
+    letter-spacing:.05em;
+    pointer-events:none;
+  }
+
+  .footer-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;font-size:11px;color:var(--muted);
+    font-family:'Quicksand', sans-serif;
+  }
+  .reset-btn{
+    background:none;border:1px solid var(--line);
+    border-radius:10px;padding:6px 12px;
+    font-size:11px;color:var(--muted);cursor:pointer;
+    font-family:'Quicksand', sans-serif;
+  }
+  .reset-btn:hover{border-color:var(--red);color:var(--red);}
+  .loading{padding:40px;text-align:center;color:var(--muted);font-family:'Quicksand', sans-serif;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="loading">読み込み中...</div>
+</div>
+
+<script>
+const STORAGE_KEY = 'chart-tracker-state-v1';
+const COLOR_DEPOT_LABELS = {kokura:'小倉', roppongi:'六本松', honsha:'本社'};
+const STONE_DEPOT_LABELS = {honsha:'本社', kashii:'香椎', roppongi:'六本松'};
+
+const DEFAULT_STATE = {
+  colorDepots: { kokura:6, roppongi:10, honsha:4 },
+  stoneDepots: { honsha:1, kashii:8, roppongi:6 },
+  stores: [
+    { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'7月新色にて作成依頼済み' },
+    { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'' },
+    { id:'izumisano', name:'泉佐野（エレガンス）', open:'2026-10-13', delivery:'2026-10-02', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'' },
+    { id:'ikoma', name:'生駒', open:'2026-10-31（予定）', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'搬入日未定' },
+    { id:'morera', name:'モレラ岐阜店', open:'2026-11月末～12月', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'搬入日未定' }
+  ]
+};
+
+let state = null;
+
+function migrateState(loaded){
+  // 旧バージョンのデータ（depots/depot単一構造）を新構造に補完する
+  if(!loaded.colorDepots && loaded.depots){
+    loaded.colorDepots = loaded.depots;
+    delete loaded.depots;
+  }
+  if(!loaded.stoneDepots){
+    loaded.stoneDepots = JSON.parse(JSON.stringify(DEFAULT_STATE.stoneDepots));
+  }
+  (loaded.stores||[]).forEach(s=>{
+    if(s.colorDepot !== undefined){
+      s.colorAlloc = s.colorDepot ? [{depot:s.colorDepot, qty: (s.colorDone||[]).filter(Boolean).length || 4},{depot:'',qty:0}] : [{depot:'',qty:0},{depot:'',qty:0}];
+      delete s.colorDepot;
+    }
+    if(s.stoneDepot !== undefined){
+      s.stoneAlloc = s.stoneDepot ? [{depot:s.stoneDepot, qty: (s.stoneDone||[]).filter(Boolean).length || 4},{depot:'',qty:0}] : [{depot:'',qty:0},{depot:'',qty:0}];
+      delete s.stoneDepot;
+    }
+    if(!s.colorAlloc) s.colorAlloc = [{depot:'',qty:0},{depot:'',qty:0}];
+    if(!s.stoneAlloc) s.stoneAlloc = [{depot:'',qty:0},{depot:'',qty:0}];
+    if(s.colorAlloc.length < 2) s.colorAlloc.push({depot:'',qty:0});
+    if(s.stoneAlloc.length < 2) s.stoneAlloc.push({depot:'',qty:0});
+    if(!s.sampleDone) s.sampleDone = [false,false,false,false];
+    if(s.sampleRequestStore === undefined) s.sampleRequestStore = '';
+    if(s.sampleRequester === undefined) s.sampleRequester = '';
+  });
+  return loaded;
+}
+
+async function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      state = migrateState(JSON.parse(raw));
+    } else {
+      state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+  } catch(e){
+    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  }
+  render();
+}
+
+async function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e){
+    console.error('保存に失敗しました', e);
+  }
+}
+
+async function resetState(){
+  if(!confirm('全データを初期状態に戻します。よろしいですか？')) return;
+  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  await saveState();
+  render();
+}
+
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const target = new Date(dateStr);
+  target.setHours(0,0,0,0);
+  return Math.round((target - today) / 86400000);
+}
+
+function urgencyBadge(dateStr){
+  if(!dateStr) return {cls:'tbd', text:'搬入日 未定'};
+  const d = daysUntil(dateStr);
+  if(d < 0) return {cls:'urgent', text:`搬入日超過 ${Math.abs(d)}日`};
+  if(d <= 7) return {cls:'urgent', text:`残り ${d}日`};
+  if(d <= 21) return {cls:'soon', text:`残り ${d}日`};
+  return {cls:'ok', text:`残り ${d}日`};
+}
+
+function computeAllocation(depotKey, allocField){
+  const alloc = {};
+  Object.keys(state[depotKey]).forEach(k=>alloc[k]=0);
+  state.stores.forEach(s=>{
+    (s[allocField]||[]).forEach(a=>{
+      if(a.depot && alloc.hasOwnProperty(a.depot)){
+        alloc[a.depot] += Number(a.qty)||0;
+      }
+    });
+  });
+  return alloc;
+}
+
+function depotRowHtml(depotKey, allocField, labels, unitNote){
+  const alloc = computeAllocation(depotKey, allocField);
+  const totalStock = Object.values(state[depotKey]).reduce((a,b)=>a+Number(b||0),0);
+  const totalAlloc = Object.values(alloc).reduce((a,b)=>a+b,0);
+  const totalRequired = state.stores.length * 4;
+  const cards = Object.keys(state[depotKey]).map(key=>{
+    const stock = Number(state[depotKey][key]||0);
+    const used = alloc[key];
+    const remain = stock - used;
+    const warn = remain < 0;
+    return `
+    <div class="depot-card">
+      <div class="name">${labels[key]}</div>
+      <div class="stockrow">
+        <input type="number" min="0" value="${stock}" data-depotkey="${depotKey}" data-depot="${key}" class="depot-input">
+        <span style="font-size:11px;color:var(--muted);">セット</span>
+      </div>
+      <div class="alloc ${warn?'warn':''}">振分済み <b>${used}</b> ／ 残 <b>${remain}</b></div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="depot-row">${cards}</div>
+    <div class="totals-bar">
+      <span>${unitNote}合計在庫 <b>${totalStock}</b></span>
+      <span>${unitNote}必要数(全店) <b>${totalRequired}</b></span>
+      <span>振分済み合計 <b>${totalAlloc}</b></span>
+    </div>
+  `;
+}
+
+function render(){
+  const app = document.getElementById('app');
+
+  const sortedStores = [...state.stores].sort((a,b)=>{
+    if(!a.delivery && !b.delivery) return 0;
+    if(!a.delivery) return 1;
+    if(!b.delivery) return -1;
+    return new Date(a.delivery) - new Date(b.delivery);
+  });
+
+  let html = `
+    <div class="header">
+      <div>
+        <h1>新店チャート手配台帳</h1>
+        <p>カラーチャート／ストーンチャート／サンプルオプション　各4台　新規出店対応</p>
+      </div>
+      <div class="stamp">在庫管理</div>
+    </div>
+
+    <div class="section-title">カラーチャート在庫（保管場所別）</div>
+    ${depotRowHtml('colorDepots', 'colorAlloc', COLOR_DEPOT_LABELS, 'カラーチャート')}
+
+    <div class="section-title">ストーンチャート在庫（保管場所別）</div>
+    ${depotRowHtml('stoneDepots', 'stoneAlloc', STONE_DEPOT_LABELS, 'ストーンチャート')}
+
+    <div class="section-title">サンプルオプション在庫</div>
+    <div class="totals-bar">
+      <span>サンプルオプション合計在庫 <b>0</b></span>
+      <span>サンプルオプション必要数(全店) <b>${state.stores.length * 4}</b></span>
+      <span style="color:var(--muted);">※ 在庫なし・全店新規作成対応</span>
+    </div>
+
+    <div class="section-title">出店店舗（搬入日順）</div>
+  `;
+
+  sortedStores.forEach(s=>{
+    const badge = urgencyBadge(s.delivery);
+    const colorCount = s.colorDone.filter(Boolean).length;
+    const stoneCount = s.stoneDone.filter(Boolean).length;
+    const sampleCount = s.sampleDone.filter(Boolean).length;
+    const total = colorCount + stoneCount + sampleCount;
+    const isComplete = colorCount === 4 && stoneCount === 4 && sampleCount === 4;
+    let statusCls = 'none', statusText = '未着手';
+    if(isComplete){ statusCls='done'; statusText='完了'; }
+    else if(total > 0){ statusCls='partial'; statusText=`進行中 (色${colorCount}/4・石${stoneCount}/4・サンプル${sampleCount}/4)`; }
+
+    html += `
+    <div class="store-card" data-store="${s.id}">
+      ${isComplete ? '<div class="complete-stamp">完了</div>' : ''}
+      <div class="store-top">
+        <div class="store-name-block">
+          <span class="badge ${badge.cls}">${badge.text}</span>
+          <h3>${s.name}</h3>
+          <div class="dates">OPEN ${s.open || '未定'} ／ 搬入日 ${s.delivery || '未定'}</div>
+        </div>
+      </div>
+
+      <div class="progress-block">
+        <div class="progress-row">
+          <div class="label">カラーチャート ${colorCount}/4</div>
+          <div class="chips">
+            ${s.colorDone.map((v,i)=>`<div class="chip circle ${v?'on':''}" data-store="${s.id}" data-type="color" data-idx="${i}"></div>`).join('')}
+          </div>
+          <div class="alloc-slots">
+            ${s.colorAlloc.map((a,i)=>`
+            <div class="alloc-slot">
+              <select class="depot-select mini-select" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="depot">
+                <option value="" ${a.depot===''?'selected':''}>倉庫未定</option>
+                ${Object.keys(COLOR_DEPOT_LABELS).map(k=>`<option value="${k}" ${a.depot===k?'selected':''}>${COLOR_DEPOT_LABELS[k]}</option>`).join('')}
+              </select>
+              <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="qty">
+            </div>`).join('')}
+            <span class="alloc-total ${(s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
+          </div>
+        </div>
+        <div class="progress-row">
+          <div class="label">ストーンチャート ${stoneCount}/4</div>
+          <div class="chips">
+            ${s.stoneDone.map((v,i)=>`<div class="chip diamond ${v?'on':''}" data-store="${s.id}" data-type="stone" data-idx="${i}"></div>`).join('')}
+          </div>
+          <div class="alloc-slots">
+            ${s.stoneAlloc.map((a,i)=>`
+            <div class="alloc-slot">
+              <select class="depot-select mini-select" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="depot">
+                <option value="" ${a.depot===''?'selected':''}>倉庫未定</option>
+                ${Object.keys(STONE_DEPOT_LABELS).map(k=>`<option value="${k}" ${a.depot===k?'selected':''}>${STONE_DEPOT_LABELS[k]}</option>`).join('')}
+              </select>
+              <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="qty">
+            </div>`).join('')}
+            <span class="alloc-total ${(s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
+          </div>
+        </div>
+        <div class="progress-row">
+          <div class="label">サンプルオプション ${sampleCount}/4</div>
+          <div class="chips">
+            ${s.sampleDone.map((v,i)=>`<div class="chip square ${v?'on':''}" data-store="${s.id}" data-type="sample" data-idx="${i}"></div>`).join('')}
+          </div>
+          <div class="sample-meta">
+            <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.sampleRequestStore || ''}" data-store="${s.id}" data-field="sampleRequestStore">
+            <input type="text" class="mini-input" placeholder="依頼者" value="${s.sampleRequester || ''}" data-store="${s.id}" data-field="sampleRequester">
+          </div>
+        </div>
+      </div>
+
+      <div class="status-note-row">
+        <span class="status-label ${statusCls}">${statusText}</span>
+        <input type="text" class="note-input" placeholder="メモを入力" value="${s.note || ''}" data-store="${s.id}" data-field="note">
+      </div>
+    </div>`;
+  });
+
+  html += `
+    <div class="footer-bar">
+      <span>クリックで進捗チップを切替／入力は自動保存されます</span>
+      <button class="reset-btn" id="resetBtn">初期状態にリセット</button>
+    </div>
+  `;
+
+  app.innerHTML = html;
+  attachHandlers();
+}
+
+function attachHandlers(){
+  document.querySelectorAll('.depot-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const depotKey = e.target.dataset.depotkey;
+      const key = e.target.dataset.depot;
+      state[depotKey][key] = Number(e.target.value) || 0;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.chip').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const {store, type, idx} = e.target.dataset;
+      const s = state.stores.find(x=>x.id===store);
+      const arr = type==='color' ? s.colorDone : type==='stone' ? s.stoneDone : s.sampleDone;
+      arr[Number(idx)] = !arr[Number(idx)];
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.depot-select').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      const slot = s[e.target.dataset.alloc][Number(e.target.dataset.slot)];
+      slot.depot = e.target.value;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.qty-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      const allocField = e.target.dataset.alloc;
+      const slot = s[allocField][Number(e.target.dataset.slot)];
+      let v = Number(e.target.value) || 0;
+      if(v < 0) v = 0;
+      if(v > 4) v = 4;
+      slot.qty = v;
+
+      const total = Math.min(4, s[allocField].reduce((sum,a)=>sum+Number(a.qty||0),0));
+      const doneField = allocField === 'colorAlloc' ? 'colorDone' : 'stoneDone';
+      s[doneField] = [0,1,2,3].map(i=>i < total);
+
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.mini-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      s[e.target.dataset.field] = e.target.value;
+      saveState();
+    });
+  });
+
+  document.querySelectorAll('.note-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      s.note = e.target.value;
+      saveState();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', resetState);
+}
+
+loadState();
+</script>
+</body>
+</html>
