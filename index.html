@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
 <style>
   :root{
     --paper:#FDF3F6;
@@ -283,6 +285,30 @@
 
 <script>
 const STORAGE_KEY = 'chart-tracker-state-v1';
+
+// ▼▼▼ ここにFirebaseの設定値を貼り付けてください（手順はREADME参照） ▼▼▼
+const firebaseConfig = {
+  apiKey: "ここに貼り付け",
+  authDomain: "ここに貼り付け",
+  databaseURL: "ここに貼り付け",
+  projectId: "ここに貼り付け",
+  storageBucket: "ここに貼り付け",
+  messagingSenderId: "ここに貼り付け",
+  appId: "ここに貼り付け"
+};
+// ▲▲▲ ここまで ▲▲▲
+
+let db = null;
+let firebaseReady = false;
+try{
+  if(firebaseConfig.databaseURL && firebaseConfig.databaseURL !== "ここに貼り付け"){
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    firebaseReady = true;
+  }
+} catch(e){
+  console.error('Firebase初期化エラー', e);
+}
 const COLOR_DEPOT_LABELS = {kokura:'小倉', roppongi:'六本松', honsha:'本社'};
 const STONE_DEPOT_LABELS = {honsha:'本社', kashii:'香椎', roppongi:'六本松'};
 
@@ -330,6 +356,19 @@ function migrateState(loaded){
 }
 
 async function loadState(){
+  if(firebaseReady){
+    // Firebase接続時：リアルタイムで全員の変更を同期する
+    db.ref(STORAGE_KEY).on('value', snapshot => {
+      const val = snapshot.val();
+      state = val ? migrateState(val) : JSON.parse(JSON.stringify(DEFAULT_STATE));
+      render();
+    }, err => {
+      console.error('Firebase読み込みエラー', err);
+      document.getElementById('app').innerHTML = '<div class="loading">データベースに接続できませんでした。設定(firebaseConfig / セキュリティルール)を確認してください。</div>';
+    });
+    return;
+  }
+  // Firebase未設定時：この端末のブラウザだけに保存（共有はされません）
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
     if(raw){
@@ -344,6 +383,15 @@ async function loadState(){
 }
 
 async function saveState(){
+  if(firebaseReady){
+    try{
+      await db.ref(STORAGE_KEY).set(state);
+    } catch(e){
+      console.error('Firebase保存エラー', e);
+      alert('保存に失敗しました。ネット接続または設定をご確認ください。');
+    }
+    return;
+  }
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch(e){
