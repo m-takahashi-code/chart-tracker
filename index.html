@@ -95,6 +95,7 @@
     margin-bottom:14px;
   }
   .depot-card{
+    position:relative;
     background:var(--card);
     border:1px solid var(--line);
     border-radius:14px;
@@ -113,6 +114,28 @@
   .depot-card .alloc{font-size:11px;color:var(--muted);margin-top:6px;}
   .depot-card .alloc b{color:var(--ink);}
   .depot-card .alloc.warn b{color:var(--red-text);}
+  .depot-name-input{
+    display:block;width:100%;
+    font-size:12px !important;font-weight:500 !important;
+    color:var(--muted) !important;
+    margin-bottom:6px;
+  }
+  .depot-delete{
+    position:absolute;top:6px;right:8px;
+    background:none;border:none;
+    color:var(--muted);font-size:14px;
+    cursor:pointer;line-height:1;padding:2px 4px;
+  }
+  .depot-delete:hover{color:var(--red-text);}
+  .depot-add-card{
+    display:flex;align-items:center;justify-content:center;
+    border:2px dashed var(--line);
+    background:transparent;cursor:pointer;
+    min-height:70px;
+  }
+  .depot-add-inner{font-size:12px;color:var(--muted);font-family:'Quicksand', sans-serif;}
+  .depot-add-card:hover{border-color:var(--teal);}
+  .depot-add-card:hover .depot-add-inner{color:var(--teal-text);}
 
   .totals-bar{
     display:flex;gap:18px;flex-wrap:wrap;
@@ -126,6 +149,42 @@
   }
   .totals-bar span b{font-size:16px;}
 
+  .add-store-row{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    background:var(--card);
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+    margin-bottom:14px;
+  }
+  .add-store-input{
+    font-size:13px;
+    font-family:'Zen Maru Gothic', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:4px 2px;flex:1;min-width:140px;
+  }
+  .add-store-input-small{flex:0 0 170px;min-width:120px;}
+  .date-field{display:flex;flex-direction:column;gap:2px;}
+  .date-field-label{font-size:10px;color:var(--muted);font-family:'Quicksand', sans-serif;}
+  .dates-edit{display:flex;gap:14px;margin-top:4px;}
+  .date-input{
+    font-size:12px;
+    font-family:'Quicksand', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:3px 2px;
+  }
+  .date-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .add-store-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .add-store-btn{
+    background:var(--teal);border:none;color:var(--teal-text);
+    font-family:'Zen Maru Gothic', sans-serif;font-weight:700;
+    font-size:13px;padding:8px 16px;border-radius:20px;
+    cursor:pointer;white-space:nowrap;
+  }
+  .add-store-btn:hover{opacity:.85;}
+
   /* store cards */
   .store-card{
     position:relative;
@@ -136,6 +195,14 @@
     margin-bottom:14px;
     overflow:hidden;
   }
+  .store-delete{
+    position:absolute;top:14px;right:14px;
+    background:none;border:none;
+    color:var(--muted);font-size:16px;
+    cursor:pointer;line-height:1;padding:4px 6px;
+    z-index:2;
+  }
+  .store-delete:hover{color:var(--red-text);}
   .store-top{
     display:flex;justify-content:space-between;align-items:flex-start;
     flex-wrap:wrap;gap:10px;
@@ -228,6 +295,21 @@
     display:flex;justify-content:space-between;align-items:center;
     gap:12px;flex-wrap:wrap;
   }
+  .ship-row{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    margin-top:6px;padding-top:10px;
+    border-top:1px dashed var(--line);
+  }
+  .ship-label{font-size:11px;color:var(--muted);font-family:'Quicksand', sans-serif;letter-spacing:.05em;}
+  .ship-status-select{
+    font-size:12px;font-weight:700;
+    font-family:'Zen Maru Gothic', sans-serif;
+    border:none;border-radius:20px;
+    padding:5px 12px;cursor:pointer;
+  }
+  .ship-status-select.ship-status-未発送{background:var(--chip-empty);color:var(--muted);}
+  .ship-status-select.ship-status-発送済み{background:var(--amber);color:var(--amber-text);}
+  .ship-status-select.ship-status-到着済み{background:var(--teal);color:var(--teal-text);}
   .status-label{
     font-family:'Quicksand', sans-serif;
     font-size:12px;font-weight:700;
@@ -288,13 +370,13 @@ const STORAGE_KEY = 'chart-tracker-state-v1';
 
 // ▼▼▼ ここにFirebaseの設定値を貼り付けてください（手順はREADME参照） ▼▼▼
 const firebaseConfig = {
-  apiKey: "AIzaSyAd1yFQvZqXI3eF4HWHN4_qUdtb-LCgVGY",
-  authDomain: "chart-tracker-d6909.firebaseapp.com",
-  databaseURL: "https://chart-tracker-d6909-default-rtdb.firebaseio.com",
-  projectId: "chart-tracker-d6909",
-  storageBucket: "chart-tracker-d6909.firebasestorage.app",
-  messagingSenderId: "648830849134",
-  appId: "1:648830849134:web:40c510d88994aee9bd67f"
+  apiKey: "ここに貼り付け",
+  authDomain: "ここに貼り付け",
+  databaseURL: "ここに貼り付け",
+  projectId: "ここに貼り付け",
+  storageBucket: "ここに貼り付け",
+  messagingSenderId: "ここに貼り付け",
+  appId: "ここに貼り付け"
 };
 // ▲▲▲ ここまで ▲▲▲
 
@@ -309,22 +391,36 @@ try{
 } catch(e){
   console.error('Firebase初期化エラー', e);
 }
-const COLOR_DEPOT_LABELS = {kokura:'小倉', roppongi:'六本松', honsha:'本社'};
-const STONE_DEPOT_LABELS = {honsha:'本社', kashii:'香椎', roppongi:'六本松'};
 
 const DEFAULT_STATE = {
-  colorDepots: { kokura:6, roppongi:10, honsha:4 },
-  stoneDepots: { honsha:1, kashii:8, roppongi:6 },
+  colorDepots: [
+    {id:'kokura', name:'小倉', stock:6},
+    {id:'roppongi', name:'六本松', stock:10},
+    {id:'honsha', name:'本社', stock:4}
+  ],
+  stoneDepots: [
+    {id:'honsha', name:'本社', stock:1},
+    {id:'kashii', name:'香椎', stock:8},
+    {id:'roppongi', name:'六本松', stock:6}
+  ],
   stores: [
-    { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'7月新色にて作成依頼済み' },
-    { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'' },
-    { id:'izumisano', name:'泉佐野（エレガンス）', open:'2026-10-13', delivery:'2026-10-02', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'' },
-    { id:'ikoma', name:'生駒', open:'2026-10-31（予定）', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'搬入日未定' },
-    { id:'morera', name:'モレラ岐阜店', open:'2026-11月末～12月', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], sampleRequestStore:'', sampleRequester:'', note:'搬入日未定' }
+    { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'7月新色にて作成依頼済み' },
+    { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'izumisano', name:'泉佐野（エレガンス）', open:'2026-10-13', delivery:'2026-10-02', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'ikoma', name:'生駒', open:'2026-10-31', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPEN日は予定・搬入日未定' },
+    { id:'morera', name:'モレラ岐阜店', open:'', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPENは11月末～12月予定・搬入日未定' }
   ]
 };
 
 let state = null;
+
+function newId(prefix){
+  return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+function isIsoDate(str){
+  return /^\d{4}-\d{2}-\d{2}$/.test(str||'');
+}
 
 function migrateState(loaded){
   // 旧バージョンのデータ（depots/depot単一構造）を新構造に補完する
@@ -335,6 +431,13 @@ function migrateState(loaded){
   if(!loaded.stoneDepots){
     loaded.stoneDepots = JSON.parse(JSON.stringify(DEFAULT_STATE.stoneDepots));
   }
+  // 倉庫が「固定オブジェクト」形式(旧構造)なら「配列」形式に変換する
+  ['colorDepots','stoneDepots'].forEach(key=>{
+    if(loaded[key] && !Array.isArray(loaded[key])){
+      loaded[key] = Object.keys(loaded[key]).map(k=>({id:k, name:k, stock:loaded[key][k]}));
+    }
+    if(!Array.isArray(loaded[key])) loaded[key] = [];
+  });
   (loaded.stores||[]).forEach(s=>{
     if(s.colorDepot !== undefined){
       s.colorAlloc = s.colorDepot ? [{depot:s.colorDepot, qty: (s.colorDone||[]).filter(Boolean).length || 4},{depot:'',qty:0}] : [{depot:'',qty:0},{depot:'',qty:0}];
@@ -349,8 +452,22 @@ function migrateState(loaded){
     if(s.colorAlloc.length < 2) s.colorAlloc.push({depot:'',qty:0});
     if(s.stoneAlloc.length < 2) s.stoneAlloc.push({depot:'',qty:0});
     if(!s.sampleDone) s.sampleDone = [false,false,false,false];
+    if(s.colorRequestStore === undefined) s.colorRequestStore = '';
+    if(s.colorRequester === undefined) s.colorRequester = '';
+    if(s.stoneRequestStore === undefined) s.stoneRequestStore = '';
+    if(s.stoneRequester === undefined) s.stoneRequester = '';
     if(s.sampleRequestStore === undefined) s.sampleRequestStore = '';
     if(s.sampleRequester === undefined) s.sampleRequester = '';
+    if(s.shipDate === undefined) s.shipDate = '';
+    if(s.shipStatus === undefined) s.shipStatus = '未発送';
+    if(s.open && !isIsoDate(s.open)){
+      s.note = (s.note ? s.note + '　' : '') + `[旧OPEN日:${s.open}]`;
+      s.open = '';
+    }
+    if(s.delivery && !isIsoDate(s.delivery)){
+      s.note = (s.note ? s.note + '　' : '') + `[旧搬入日:${s.delivery}]`;
+      s.delivery = '';
+    }
   });
   return loaded;
 }
@@ -426,7 +543,7 @@ function urgencyBadge(dateStr){
 
 function computeAllocation(depotKey, allocField){
   const alloc = {};
-  Object.keys(state[depotKey]).forEach(k=>alloc[k]=0);
+  state[depotKey].forEach(d=>alloc[d.id]=0);
   state.stores.forEach(s=>{
     (s[allocField]||[]).forEach(a=>{
       if(a.depot && alloc.hasOwnProperty(a.depot)){
@@ -437,21 +554,22 @@ function computeAllocation(depotKey, allocField){
   return alloc;
 }
 
-function depotRowHtml(depotKey, allocField, labels, unitNote){
+function depotRowHtml(depotKey, allocField, unitNote){
   const alloc = computeAllocation(depotKey, allocField);
-  const totalStock = Object.values(state[depotKey]).reduce((a,b)=>a+Number(b||0),0);
+  const totalStock = state[depotKey].reduce((sum,d)=>sum+Number(d.stock||0),0);
   const totalAlloc = Object.values(alloc).reduce((a,b)=>a+b,0);
   const totalRequired = state.stores.length * 4;
-  const cards = Object.keys(state[depotKey]).map(key=>{
-    const stock = Number(state[depotKey][key]||0);
-    const used = alloc[key];
+  const cards = state[depotKey].map(d=>{
+    const stock = Number(d.stock||0);
+    const used = alloc[d.id]||0;
     const remain = stock - used;
     const warn = remain < 0;
     return `
     <div class="depot-card">
-      <div class="name">${labels[key]}</div>
+      <button class="depot-delete" data-depotkey="${depotKey}" data-id="${d.id}" title="この保管場所を削除">×</button>
+      <input type="text" class="depot-name-input" value="${d.name}" data-depotkey="${depotKey}" data-id="${d.id}">
       <div class="stockrow">
-        <input type="number" min="0" value="${stock}" data-depotkey="${depotKey}" data-depot="${key}" class="depot-input">
+        <input type="number" min="0" value="${stock}" data-depotkey="${depotKey}" data-id="${d.id}" class="depot-input">
         <span style="font-size:11px;color:var(--muted);">セット</span>
       </div>
       <div class="alloc ${warn?'warn':''}">振分済み <b>${used}</b> ／ 残 <b>${remain}</b></div>
@@ -459,13 +577,23 @@ function depotRowHtml(depotKey, allocField, labels, unitNote){
   }).join('');
 
   return `
-    <div class="depot-row">${cards}</div>
+    <div class="depot-row">
+      ${cards}
+      <div class="depot-card depot-add-card" data-depotkey="${depotKey}">
+        <div class="depot-add-inner">＋ 保管場所を追加</div>
+      </div>
+    </div>
     <div class="totals-bar">
       <span>${unitNote}合計在庫 <b>${totalStock}</b></span>
       <span>${unitNote}必要数(全店) <b>${totalRequired}</b></span>
       <span>振分済み合計 <b>${totalAlloc}</b></span>
     </div>
   `;
+}
+
+function depotOptionsHtml(depotKey, selectedId){
+  const opts = state[depotKey].map(d=>`<option value="${d.id}" ${selectedId===d.id?'selected':''}>${d.name}</option>`).join('');
+  return `<option value="" ${selectedId===''?'selected':''}>倉庫未定</option>${opts}`;
 }
 
 function render(){
@@ -488,10 +616,10 @@ function render(){
     </div>
 
     <div class="section-title">カラーチャート在庫（保管場所別）</div>
-    ${depotRowHtml('colorDepots', 'colorAlloc', COLOR_DEPOT_LABELS, 'カラーチャート')}
+    ${depotRowHtml('colorDepots', 'colorAlloc', 'カラーチャート')}
 
     <div class="section-title">ストーンチャート在庫（保管場所別）</div>
-    ${depotRowHtml('stoneDepots', 'stoneAlloc', STONE_DEPOT_LABELS, 'ストーンチャート')}
+    ${depotRowHtml('stoneDepots', 'stoneAlloc', 'ストーンチャート')}
 
     <div class="section-title">サンプルオプション在庫</div>
     <div class="totals-bar">
@@ -501,6 +629,18 @@ function render(){
     </div>
 
     <div class="section-title">出店店舗（搬入日順）</div>
+    <div class="add-store-row">
+      <input type="text" id="newStoreName" class="add-store-input" placeholder="新しい店舗名">
+      <label class="date-field">
+        <span class="date-field-label">OPEN日</span>
+        <input type="date" id="newStoreOpen" class="add-store-input add-store-input-small">
+      </label>
+      <label class="date-field">
+        <span class="date-field-label">搬入日</span>
+        <input type="date" id="newStoreDelivery" class="add-store-input add-store-input-small">
+      </label>
+      <button id="addStoreBtn" class="add-store-btn">＋ 店舗を追加</button>
+    </div>
   `;
 
   sortedStores.forEach(s=>{
@@ -517,11 +657,21 @@ function render(){
     html += `
     <div class="store-card" data-store="${s.id}">
       ${isComplete ? '<div class="complete-stamp">完了</div>' : ''}
+      <button class="store-delete" data-store="${s.id}" title="この店舗を削除">×</button>
       <div class="store-top">
         <div class="store-name-block">
           <span class="badge ${badge.cls}">${badge.text}</span>
           <h3>${s.name}</h3>
-          <div class="dates">OPEN ${s.open || '未定'} ／ 搬入日 ${s.delivery || '未定'}</div>
+          <div class="dates-edit">
+            <label class="date-field">
+              <span class="date-field-label">OPEN</span>
+              <input type="date" class="date-input" value="${s.open||''}" data-store="${s.id}" data-field="open">
+            </label>
+            <label class="date-field">
+              <span class="date-field-label">搬入日</span>
+              <input type="date" class="date-input" value="${s.delivery||''}" data-store="${s.id}" data-field="delivery">
+            </label>
+          </div>
         </div>
       </div>
 
@@ -535,12 +685,15 @@ function render(){
             ${s.colorAlloc.map((a,i)=>`
             <div class="alloc-slot">
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="depot">
-                <option value="" ${a.depot===''?'selected':''}>倉庫未定</option>
-                ${Object.keys(COLOR_DEPOT_LABELS).map(k=>`<option value="${k}" ${a.depot===k?'selected':''}>${COLOR_DEPOT_LABELS[k]}</option>`).join('')}
+                ${depotOptionsHtml('colorDepots', a.depot)}
               </select>
               <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
             <span class="alloc-total ${(s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
+          </div>
+          <div class="sample-meta">
+            <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.colorRequestStore || ''}" data-store="${s.id}" data-field="colorRequestStore">
+            <input type="text" class="mini-input" placeholder="依頼者" value="${s.colorRequester || ''}" data-store="${s.id}" data-field="colorRequester">
           </div>
         </div>
         <div class="progress-row">
@@ -552,12 +705,15 @@ function render(){
             ${s.stoneAlloc.map((a,i)=>`
             <div class="alloc-slot">
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="depot">
-                <option value="" ${a.depot===''?'selected':''}>倉庫未定</option>
-                ${Object.keys(STONE_DEPOT_LABELS).map(k=>`<option value="${k}" ${a.depot===k?'selected':''}>${STONE_DEPOT_LABELS[k]}</option>`).join('')}
+                ${depotOptionsHtml('stoneDepots', a.depot)}
               </select>
               <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
             <span class="alloc-total ${(s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
+          </div>
+          <div class="sample-meta">
+            <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.stoneRequestStore || ''}" data-store="${s.id}" data-field="stoneRequestStore">
+            <input type="text" class="mini-input" placeholder="依頼者" value="${s.stoneRequester || ''}" data-store="${s.id}" data-field="stoneRequester">
           </div>
         </div>
         <div class="progress-row">
@@ -570,6 +726,19 @@ function render(){
             <input type="text" class="mini-input" placeholder="依頼者" value="${s.sampleRequester || ''}" data-store="${s.id}" data-field="sampleRequester">
           </div>
         </div>
+      </div>
+
+      <div class="ship-row">
+        <span class="ship-label">発送管理</span>
+        <label class="date-field">
+          <span class="date-field-label">発送日</span>
+          <input type="date" class="date-input" value="${s.shipDate||''}" data-store="${s.id}" data-field="shipDate">
+        </label>
+        <select class="ship-status-select ship-status-${s.shipStatus}" data-store="${s.id}">
+          <option value="未発送" ${s.shipStatus==='未発送'?'selected':''}>未発送</option>
+          <option value="発送済み" ${s.shipStatus==='発送済み'?'selected':''}>発送済み</option>
+          <option value="到着済み" ${s.shipStatus==='到着済み'?'selected':''}>到着済み</option>
+        </select>
       </div>
 
       <div class="status-note-row">
@@ -594,8 +763,79 @@ function attachHandlers(){
   document.querySelectorAll('.depot-input').forEach(el=>{
     el.addEventListener('change', e=>{
       const depotKey = e.target.dataset.depotkey;
-      const key = e.target.dataset.depot;
-      state[depotKey][key] = Number(e.target.value) || 0;
+      const id = e.target.dataset.id;
+      const d = state[depotKey].find(x=>x.id===id);
+      if(d) d.stock = Number(e.target.value) || 0;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.depot-name-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const depotKey = e.target.dataset.depotkey;
+      const id = e.target.dataset.id;
+      const d = state[depotKey].find(x=>x.id===id);
+      if(d) d.name = e.target.value || d.name;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.depot-delete').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const depotKey = e.target.dataset.depotkey;
+      const id = e.target.dataset.id;
+      const d = state[depotKey].find(x=>x.id===id);
+      if(!d) return;
+      if(!confirm(`「${d.name}」を削除しますか？この倉庫を引当先にしている店舗があれば、未定に戻ります。`)) return;
+      state[depotKey] = state[depotKey].filter(x=>x.id!==id);
+      const allocField = depotKey === 'colorDepots' ? 'colorAlloc' : 'stoneAlloc';
+      state.stores.forEach(s=>{
+        s[allocField].forEach(a=>{ if(a.depot===id){ a.depot=''; a.qty=0; } });
+      });
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.depot-add-card').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const depotKey = e.currentTarget.dataset.depotkey;
+      const name = prompt('新しい保管場所の名前を入力してください（例：福岡倉庫）');
+      if(!name) return;
+      state[depotKey].push({id:newId('depot'), name:name, stock:0});
+      saveState();
+      render();
+    });
+  });
+
+  document.getElementById('addStoreBtn').addEventListener('click', ()=>{
+    const nameEl = document.getElementById('newStoreName');
+    const openEl = document.getElementById('newStoreOpen');
+    const deliveryEl = document.getElementById('newStoreDelivery');
+    const name = nameEl.value.trim();
+    if(!name){ alert('店舗名を入力してください'); return; }
+    state.stores.push({
+      id:newId('store'), name:name,
+      open: openEl.value.trim(), delivery: deliveryEl.value.trim(),
+      colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
+      stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
+      colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false],
+      colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'',
+      sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:''
+    });
+    saveState();
+    render();
+  });
+
+  document.querySelectorAll('.store-delete').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const id = e.target.dataset.store;
+      const s = state.stores.find(x=>x.id===id);
+      if(!s) return;
+      if(!confirm(`「${s.name}」を削除しますか？この操作は元に戻せません。`)) return;
+      state.stores = state.stores.filter(x=>x.id!==id);
       saveState();
       render();
     });
@@ -646,6 +886,24 @@ function attachHandlers(){
       const s = state.stores.find(x=>x.id===e.target.dataset.store);
       s[e.target.dataset.field] = e.target.value;
       saveState();
+    });
+  });
+
+  document.querySelectorAll('.ship-status-select').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      s.shipStatus = e.target.value;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.date-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      s[e.target.dataset.field] = e.target.value;
+      saveState();
+      render();
     });
   });
 
