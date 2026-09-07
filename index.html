@@ -370,13 +370,13 @@ const STORAGE_KEY = 'chart-tracker-state-v1';
 
 // ▼▼▼ ここにFirebaseの設定値を貼り付けてください（手順はREADME参照） ▼▼▼
 const firebaseConfig = {
-  apiKey: "AIzaSyAdlyFQvZqXI3eF4HWHN4_qUdtb-LCgVGY",
-  authDomain: "chart-tracker-d6909.firebaseapp.com",
-  databaseURL: "https://chart-tracker-d6909-default-rtdb.firebaseio.com",
-  projectId: "chart-tracker-d6909",
-  storageBucket: "chart-tracker-d6909.firebasestorage.app",
-  messagingSenderId: "648830849134",
-  appId: "1:648830849134:web:40c510d88994aee9dbd67f"
+  apiKey: "ここに貼り付け",
+  authDomain: "ここに貼り付け",
+  databaseURL: "ここに貼り付け",
+  projectId: "ここに貼り付け",
+  storageBucket: "ここに貼り付け",
+  messagingSenderId: "ここに貼り付け",
+  appId: "ここに貼り付け"
 };
 // ▲▲▲ ここまで ▲▲▲
 
@@ -403,12 +403,13 @@ const DEFAULT_STATE = {
     {id:'kashii', name:'香椎', stock:8},
     {id:'roppongi', name:'六本松', stock:6}
   ],
+  sampleDepots: [],
   stores: [
-    { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'7月新色にて作成依頼済み' },
-    { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
-    { id:'izumisano', name:'泉佐野（エレガンス）', open:'2026-10-13', delivery:'2026-10-02', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
-    { id:'ikoma', name:'生駒', open:'2026-10-31', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPEN日は予定・搬入日未定' },
-    { id:'morera', name:'モレラ岐阜店', open:'', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPENは11月末～12月予定・搬入日未定' }
+    { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'7月新色にて作成依頼済み' },
+    { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'izumisano', name:'泉佐野（エレガンス）', open:'2026-10-13', delivery:'2026-10-02', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'ikoma', name:'生駒', open:'2026-10-31', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPEN日は予定・搬入日未定' },
+    { id:'morera', name:'モレラ岐阜店', open:'', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPENは11月末～12月予定・搬入日未定' }
   ]
 };
 
@@ -431,8 +432,11 @@ function migrateState(loaded){
   if(!loaded.stoneDepots){
     loaded.stoneDepots = JSON.parse(JSON.stringify(DEFAULT_STATE.stoneDepots));
   }
+  if(!loaded.sampleDepots){
+    loaded.sampleDepots = [];
+  }
   // 倉庫が「固定オブジェクト」形式(旧構造)なら「配列」形式に変換する
-  ['colorDepots','stoneDepots'].forEach(key=>{
+  ['colorDepots','stoneDepots','sampleDepots'].forEach(key=>{
     if(loaded[key] && !Array.isArray(loaded[key])){
       loaded[key] = Object.keys(loaded[key]).map(k=>({id:k, name:k, stock:loaded[key][k]}));
     }
@@ -449,8 +453,10 @@ function migrateState(loaded){
     }
     if(!s.colorAlloc) s.colorAlloc = [{depot:'',qty:0},{depot:'',qty:0}];
     if(!s.stoneAlloc) s.stoneAlloc = [{depot:'',qty:0},{depot:'',qty:0}];
+    if(!s.sampleAlloc) s.sampleAlloc = [{depot:'',qty:0},{depot:'',qty:0}];
     if(s.colorAlloc.length < 2) s.colorAlloc.push({depot:'',qty:0});
     if(s.stoneAlloc.length < 2) s.stoneAlloc.push({depot:'',qty:0});
+    if(s.sampleAlloc.length < 2) s.sampleAlloc.push({depot:'',qty:0});
     if(!s.sampleDone) s.sampleDone = [false,false,false,false];
     if(s.colorRequestStore === undefined) s.colorRequestStore = '';
     if(s.colorRequester === undefined) s.colorRequester = '';
@@ -621,23 +627,19 @@ function render(){
     <div class="section-title">ストーンチャート在庫（保管場所別）</div>
     ${depotRowHtml('stoneDepots', 'stoneAlloc', 'ストーンチャート')}
 
-    <div class="section-title">サンプルオプション在庫</div>
-    <div class="totals-bar">
-      <span>サンプルオプション合計在庫 <b>0</b></span>
-      <span>サンプルオプション必要数(全店) <b>${state.stores.length * 4}</b></span>
-      <span style="color:var(--muted);">※ 在庫なし・全店新規作成対応</span>
-    </div>
+    <div class="section-title">サンプルオプション在庫（保管場所別）</div>
+    ${depotRowHtml('sampleDepots', 'sampleAlloc', 'サンプルオプション')}
 
     <div class="section-title">出店店舗（搬入日順）</div>
     <div class="add-store-row">
       <input type="text" id="newStoreName" class="add-store-input" placeholder="新しい店舗名">
       <label class="date-field">
-        <span class="date-field-label">OPEN日</span>
-        <input type="date" id="newStoreOpen" class="add-store-input add-store-input-small">
-      </label>
-      <label class="date-field">
         <span class="date-field-label">搬入日</span>
         <input type="date" id="newStoreDelivery" class="add-store-input add-store-input-small">
+      </label>
+      <label class="date-field">
+        <span class="date-field-label">OPEN日</span>
+        <input type="date" id="newStoreOpen" class="add-store-input add-store-input-small">
       </label>
       <button id="addStoreBtn" class="add-store-btn">＋ 店舗を追加</button>
     </div>
@@ -664,12 +666,12 @@ function render(){
           <h3>${s.name}</h3>
           <div class="dates-edit">
             <label class="date-field">
-              <span class="date-field-label">OPEN</span>
-              <input type="date" class="date-input" value="${s.open||''}" data-store="${s.id}" data-field="open">
-            </label>
-            <label class="date-field">
               <span class="date-field-label">搬入日</span>
               <input type="date" class="date-input" value="${s.delivery||''}" data-store="${s.id}" data-field="delivery">
+            </label>
+            <label class="date-field">
+              <span class="date-field-label">OPEN</span>
+              <input type="date" class="date-input" value="${s.open||''}" data-store="${s.id}" data-field="open">
             </label>
           </div>
         </div>
@@ -720,6 +722,16 @@ function render(){
           <div class="label">サンプルオプション ${sampleCount}/4</div>
           <div class="chips">
             ${s.sampleDone.map((v,i)=>`<div class="chip square ${v?'on':''}" data-store="${s.id}" data-type="sample" data-idx="${i}"></div>`).join('')}
+          </div>
+          <div class="alloc-slots">
+            ${s.sampleAlloc.map((a,i)=>`
+            <div class="alloc-slot">
+              <select class="depot-select mini-select" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="depot">
+                ${depotOptionsHtml('sampleDepots', a.depot)}
+              </select>
+              <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="qty">
+            </div>`).join('')}
+            <span class="alloc-total ${(s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
           </div>
           <div class="sample-meta">
             <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.sampleRequestStore || ''}" data-store="${s.id}" data-field="sampleRequestStore">
@@ -821,6 +833,7 @@ function attachHandlers(){
       open: openEl.value.trim(), delivery: deliveryEl.value.trim(),
       colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
       stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
+      sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
       colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false],
       colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'',
       sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:''
@@ -873,7 +886,7 @@ function attachHandlers(){
       slot.qty = v;
 
       const total = Math.min(4, s[allocField].reduce((sum,a)=>sum+Number(a.qty||0),0));
-      const doneField = allocField === 'colorAlloc' ? 'colorDone' : 'stoneDone';
+      const doneField = allocField === 'colorAlloc' ? 'colorDone' : allocField === 'stoneAlloc' ? 'stoneDone' : 'sampleDone';
       s[doneField] = [0,1,2,3].map(i=>i < total);
 
       saveState();
