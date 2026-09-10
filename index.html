@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新店チャート手配台帳</title>
+<title>新店チャート作成状況</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Maru+Gothic:wght@400;500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -94,6 +94,9 @@
     gap:12px;
     margin-bottom:14px;
   }
+  .depot-row.has-request-fields{
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  }
   .depot-card{
     position:relative;
     background:var(--card);
@@ -101,6 +104,16 @@
     border-radius:14px;
     padding:12px 14px;
   }
+  .depot-card.depot-card-alloc-done{
+    border:2px solid var(--teal);
+    background:linear-gradient(180deg, var(--card) 85%, #EAFBF5 100%);
+  }
+  .alloc-done-badge{
+    display:inline-block;margin-left:6px;
+    font-size:10px;font-weight:700;color:var(--teal-text);
+    background:var(--teal);border-radius:10px;padding:1px 8px;
+  }
+  .alloc.done b{color:var(--teal-text);}
   .depot-card .name{font-size:12px;color:var(--muted);margin-bottom:6px;font-family:'Quicksand', sans-serif;}
   .depot-card .stockrow{display:flex;align-items:center;gap:8px;}
   .depot-card input{
@@ -136,6 +149,26 @@
   .depot-add-inner{font-size:12px;color:var(--muted);font-family:'Quicksand', sans-serif;}
   .depot-add-card:hover{border-color:var(--teal);}
   .depot-add-card:hover .depot-add-inner{color:var(--teal-text);}
+  .depot-request-fields{
+    display:flex;flex-direction:column;align-items:stretch;gap:8px;
+    margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);
+  }
+  .depot-request-fields .date-field{width:100%;}
+  .depot-request-fields .date-input{
+    width:100%;box-sizing:border-box;font-size:12px;
+  }
+  .depot-request-fields .depot-status-select{
+    width:100%;box-sizing:border-box;text-align:center;padding:5px 8px;font-size:11px;
+  }
+  .depot-status-select{
+    font-size:11px;font-weight:700;
+    font-family:'Zen Maru Gothic', sans-serif;
+    border:none;border-radius:20px;
+    padding:4px 10px;cursor:pointer;
+  }
+  .depot-status-select.depot-status-未着手{background:var(--chip-empty);color:var(--muted);}
+  .depot-status-select.depot-status-作成中{background:var(--amber);color:var(--amber-text);}
+  .depot-status-select.depot-status-完了{background:var(--teal);color:var(--teal-text);}
 
   .totals-bar{
     display:flex;gap:18px;flex-wrap:wrap;
@@ -176,6 +209,14 @@
     padding:3px 2px;
   }
   .date-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .required-qty-input{
+    width:48px;font-size:12px;
+    font-family:'Quicksand', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:3px 2px;
+  }
+  .required-qty-input:focus{outline:none;border-bottom:1px solid var(--ink);}
   .add-store-input:focus{outline:none;border-bottom:1px solid var(--ink);}
   .add-store-btn{
     background:var(--teal);border:none;color:var(--teal-text);
@@ -184,6 +225,20 @@
     cursor:pointer;white-space:nowrap;
   }
   .add-store-btn:hover{opacity:.85;}
+
+  .store-tabs{display:flex;gap:8px;margin-bottom:14px;}
+  .store-tab{
+    background:var(--chip-empty);border:none;color:var(--muted);
+    font-family:'Zen Maru Gothic', sans-serif;font-weight:700;
+    font-size:13px;padding:8px 18px;border-radius:20px;
+    cursor:pointer;
+  }
+  .store-tab.active{background:var(--teal);color:var(--teal-text);}
+  .store-tab:hover{opacity:.9;}
+  .empty-tab-msg{
+    text-align:center;color:var(--muted);font-size:13px;
+    padding:30px 0;font-family:'Zen Maru Gothic', sans-serif;
+  }
 
   /* store cards */
   .store-card{
@@ -225,6 +280,18 @@
     font-family:'Kiwi Maru', serif;
     font-size:18px;margin:0 0 4px;
   }
+  .store-name-input{
+    display:block;
+    font-family:'Kiwi Maru', serif;
+    font-size:18px;font-weight:500;
+    color:var(--ink);
+    border:none;border-bottom:1px solid transparent;
+    background:transparent;
+    margin:0 0 4px;padding:0 0 2px;
+    width:100%;max-width:280px;
+  }
+  .store-name-input:hover{border-bottom:1px solid var(--line);}
+  .store-name-input:focus{outline:none;border-bottom:1px solid var(--ink);}
   .dates{font-size:12px;color:var(--muted);font-family:'Quicksand', sans-serif;}
 
   .depot-select{
@@ -333,15 +400,16 @@
     top:14px;right:14px;
     font-family:'Kiwi Maru', serif;
     font-weight:500;
-    font-size:18px;
+    font-size:13px;
     color:var(--teal-text);
     background:#fff;
     border:2px solid var(--teal);
-    border-radius:50%;
-    width:56px;height:56px;
+    border-radius:20px;
+    padding:8px 14px;
     display:flex;align-items:center;justify-content:center;
-    transform:rotate(10deg);
-    letter-spacing:.05em;
+    transform:rotate(6deg);
+    letter-spacing:.03em;
+    white-space:nowrap;
     pointer-events:none;
   }
 
@@ -370,13 +438,13 @@ const STORAGE_KEY = 'chart-tracker-state-v1';
 
 // ▼▼▼ ここにFirebaseの設定値を貼り付けてください（手順はREADME参照） ▼▼▼
 const firebaseConfig = {
-  apiKey: "AIzaSyAdlyFQvZqXI3eF4HWHN4_qUdtb-LCgVGY",
-  authDomain: "chart-tracker-d6909.firebaseapp.com",
-  databaseURL: "https://chart-tracker-d6909-default-rtdb.firebaseio.com",
-  projectId: "chart-tracker-d6909",
-  storageBucket: "chart-tracker-d6909.firebasestorage.app",
-  messagingSenderId: "648830849134",
-  appId: "1:648830849134:web:40c510d88994aee9dbd67f"
+  apiKey: "ここに貼り付け",
+  authDomain: "ここに貼り付け",
+  databaseURL: "ここに貼り付け",
+  projectId: "ここに貼り付け",
+  storageBucket: "ここに貼り付け",
+  messagingSenderId: "ここに貼り付け",
+  appId: "ここに貼り付け"
 };
 // ▲▲▲ ここまで ▲▲▲
 
@@ -394,22 +462,29 @@ try{
 
 const DEFAULT_STATE = {
   colorDepots: [
-    {id:'kokura', name:'小倉', stock:6},
-    {id:'roppongi', name:'六本松', stock:10},
-    {id:'honsha', name:'本社', stock:4}
+    {id:'honsha', name:'本社', stock:4, requestDate:'', status:'未着手'},
+    {id:'kokura', name:'小倉', stock:4, requestDate:'', status:'未着手'},
+    {id:'roppongi', name:'六本松', stock:10, requestDate:'', status:'未着手'}
   ],
   stoneDepots: [
-    {id:'honsha', name:'本社', stock:1},
-    {id:'kashii', name:'香椎', stock:8},
-    {id:'roppongi', name:'六本松', stock:6}
+    {id:'honsha', name:'本社', stock:1, requestDate:'', status:'未着手'},
+    {id:'kashii', name:'香椎', stock:7, requestDate:'', status:'未着手'},
+    {id:'roppongi', name:'六本松', stock:6, requestDate:'', status:'未着手'}
   ],
-  sampleDepots: [],
+  sampleDepots: [
+    {id:'wakayama', name:'和歌山', stock:8, requestDate:'', status:'未着手'},
+    {id:'higashiokazaki', name:'東岡崎', stock:4, requestDate:'', status:'未着手'}
+  ],
   stores: [
-    { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'7月新色にて作成依頼済み' },
-    { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
-    { id:'izumisano', name:'泉佐野（エレガンス）', open:'2026-10-13', delivery:'2026-10-02', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
-    { id:'ikoma', name:'生駒', open:'2026-10-31', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPEN日は予定・搬入日未定' },
-    { id:'morera', name:'モレラ岐阜店', open:'', delivery:'', colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'OPENは11月末～12月予定・搬入日未定' }
+    { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', requiredQty:4, colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'roppongi',qty:4},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[true,true,true,true], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'博多', sampleRequester:'ななさん依頼済み', shipDate:'2026-09-07', shipStatus:'発送済み', note:'カラー：7月新色にて作成依頼済み、ななさん9/5訪店時に回収　ストーン：異動のらんさん9/7持参依頼済　サンプル：異動のみこさん' },
+    { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', requiredQty:4, colorAlloc:[{depot:'honsha',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'honsha',qty:1},{depot:'kashii',qty:3}], sampleAlloc:[{depot:'higashiokazaki',qty:4},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[true,true,true,true], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'東岡崎', sampleRequester:'髙橋', shipDate:'', shipStatus:'未発送', note:'カラー：今池にて新色に変更し直接発送予定9/28　ストーン：本社保管分今池にて貼り付け確認後直送9/28　香椎：搬入日前発送依頼' },
+    { id:'izumisano', name:'泉佐野（エレガンス）', open:'2026-10-13', delivery:'2026-10-02', requiredQty:4, colorAlloc:[{depot:'roppongi',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'roppongi',qty:2},{depot:'kashii',qty:2}], sampleAlloc:[{depot:'wakayama',qty:4},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[true,true,true,true], colorRequestStore:'六本松', colorRequester:'髙橋', stoneRequestStore:'六本松、香椎', stoneRequester:'髙橋', sampleRequestStore:'和歌山', sampleRequester:'9/8髙橋', shipDate:'', shipStatus:'未発送', note:'完了　カラー：9/3六本松10台分作成依頼中　ストーン：9/7ななさんに六本松の２台関西に持ち帰りいただく　搬入日前香椎発送依頼' },
+    { id:'ikoma', name:'生駒', open:'2026-11-03', delivery:'2026-10-26', requiredQty:4, colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'wakayama',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'和歌山', sampleRequester:'9/8高橋', shipDate:'', shipStatus:'未発送', note:'未着手　搬入日未定　[OPEN日:2026-10-31（予定）]' },
+    { id:'takasaki', name:'高崎', open:'2026-11-03', delivery:'2026-10-26', requiredQty:4, colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'motoyama', name:'本山', open:'2026-11-03', delivery:'2026-10-26', requiredQty:4, colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'shimonoseki', name:'シーモール下関', open:'2026-11-03', delivery:'2026-10-26', requiredQty:4, colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'toyokawa', name:'豊川', open:'2026-11-03', delivery:'2026-10-26', requiredQty:4, colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'' },
+    { id:'morera', name:'モレラ岐阜店', open:'2026-12-01', delivery:'2026-11-20', requiredQty:4, colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}], stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[false,false,false,false], stoneDone:[false,false,false,false], sampleDone:[false,false,false,false], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'', sampleRequester:'', shipDate:'', shipStatus:'未発送', note:'未着手　搬入日未定　[OPEN日:2026-11月末～12月]' }
   ]
 };
 
@@ -421,6 +496,13 @@ function newId(prefix){
 
 function isIsoDate(str){
   return /^\d{4}-\d{2}-\d{2}$/.test(str||'');
+}
+
+function resizeBoolArray(arr, size){
+  arr = arr || [];
+  const result = [];
+  for(let i=0;i<size;i++) result.push(!!arr[i]);
+  return result;
 }
 
 function migrateState(loaded){
@@ -441,6 +523,13 @@ function migrateState(loaded){
       loaded[key] = Object.keys(loaded[key]).map(k=>({id:k, name:k, stock:loaded[key][k]}));
     }
     if(!Array.isArray(loaded[key])) loaded[key] = [];
+  });
+  // 作成依頼店舗（カラー・ストーン・サンプル）には依頼日・状況を補完する
+  ['colorDepots','stoneDepots','sampleDepots'].forEach(key=>{
+    loaded[key].forEach(d=>{
+      if(d.requestDate === undefined) d.requestDate = '';
+      if(d.status === undefined) d.status = '未着手';
+    });
   });
   (loaded.stores||[]).forEach(s=>{
     if(s.colorDepot !== undefined){
@@ -466,6 +555,10 @@ function migrateState(loaded){
     if(s.sampleRequester === undefined) s.sampleRequester = '';
     if(s.shipDate === undefined) s.shipDate = '';
     if(s.shipStatus === undefined) s.shipStatus = '未発送';
+    if(s.requiredQty === undefined || !Number(s.requiredQty)) s.requiredQty = 4;
+    s.colorDone = resizeBoolArray(s.colorDone, s.requiredQty);
+    s.stoneDone = resizeBoolArray(s.stoneDone, s.requiredQty);
+    s.sampleDone = resizeBoolArray(s.sampleDone, s.requiredQty);
     if(s.open && !isIsoDate(s.open)){
       s.note = (s.note ? s.note + '　' : '') + `[旧OPEN日:${s.open}]`;
       s.open = '';
@@ -560,33 +653,50 @@ function computeAllocation(depotKey, allocField){
   return alloc;
 }
 
-function depotRowHtml(depotKey, allocField, unitNote){
+function depotRowHtml(depotKey, allocField, unitNote, showRequestFields){
   const alloc = computeAllocation(depotKey, allocField);
   const totalStock = state[depotKey].reduce((sum,d)=>sum+Number(d.stock||0),0);
   const totalAlloc = Object.values(alloc).reduce((a,b)=>a+b,0);
-  const totalRequired = state.stores.length * 4;
+  const totalRequired = state.stores.reduce((sum,s)=>sum+Number(s.requiredQty||4),0);
   const cards = state[depotKey].map(d=>{
     const stock = Number(d.stock||0);
     const used = alloc[d.id]||0;
     const remain = stock - used;
     const warn = remain < 0;
+    const allocDone = stock > 0 && remain === 0;
+    const status = d.status || '未着手';
     return `
-    <div class="depot-card">
-      <button class="depot-delete" data-depotkey="${depotKey}" data-id="${d.id}" title="この保管場所を削除">×</button>
-      <input type="text" class="depot-name-input" value="${d.name}" data-depotkey="${depotKey}" data-id="${d.id}">
+    <div class="depot-card ${allocDone ? 'depot-card-alloc-done' : ''}">
+      <button class="depot-delete" data-depotkey="${depotKey}" data-id="${d.id}" title="この${showRequestFields?'依頼店舗':'保管場所'}を削除">×</button>
+      <input type="text" class="depot-name-input" value="${d.name}" placeholder="${showRequestFields?'依頼店舗名':'保管場所名'}" data-depotkey="${depotKey}" data-id="${d.id}">
       <div class="stockrow">
         <input type="number" min="0" value="${stock}" data-depotkey="${depotKey}" data-id="${d.id}" class="depot-input">
         <span style="font-size:11px;color:var(--muted);">セット</span>
       </div>
-      <div class="alloc ${warn?'warn':''}">振分済み <b>${used}</b> ／ 残 <b>${remain}</b></div>
+      <div class="alloc ${warn?'warn':''} ${allocDone?'done':''}">
+        振分済み <b>${used}</b> ／ 残 <b>${remain}</b>
+        ${allocDone ? '<span class="alloc-done-badge">✓ 振分完了</span>' : ''}
+      </div>
+      ${showRequestFields ? `
+      <div class="depot-request-fields">
+        <label class="date-field">
+          <span class="date-field-label">依頼日</span>
+          <input type="date" class="date-input depot-reqdate-input" value="${d.requestDate||''}" data-depotkey="${depotKey}" data-id="${d.id}">
+        </label>
+        <select class="depot-status-select depot-status-${status}" data-depotkey="${depotKey}" data-id="${d.id}">
+          <option value="未着手" ${status==='未着手'?'selected':''}>未着手</option>
+          <option value="作成中" ${status==='作成中'?'selected':''}>作成中</option>
+          <option value="完了" ${status==='完了'?'selected':''}>手配完了済</option>
+        </select>
+      </div>` : ''}
     </div>`;
   }).join('');
 
   return `
-    <div class="depot-row">
+    <div class="depot-row ${showRequestFields ? 'has-request-fields' : ''}">
       ${cards}
       <div class="depot-card depot-add-card" data-depotkey="${depotKey}">
-        <div class="depot-add-inner">＋ 保管場所を追加</div>
+        <div class="depot-add-inner">＋ ${showRequestFields ? '依頼店舗を追加' : '保管場所を追加'}</div>
       </div>
     </div>
     <div class="totals-bar">
@@ -602,6 +712,8 @@ function depotOptionsHtml(depotKey, selectedId){
   return `<option value="" ${selectedId===''?'selected':''}>倉庫未定</option>${opts}`;
 }
 
+let activeTab = 'inprogress';
+
 function render(){
   const app = document.getElementById('app');
 
@@ -610,25 +722,36 @@ function render(){
     if(!a.delivery) return 1;
     if(!b.delivery) return -1;
     return new Date(a.delivery) - new Date(b.delivery);
+  }).map(s=>{
+    const colorCount = s.colorDone.filter(Boolean).length;
+    const stoneCount = s.stoneDone.filter(Boolean).length;
+    const sampleCount = s.sampleDone.filter(Boolean).length;
+    const reqQty = s.requiredQty || 4;
+    const isComplete = colorCount === reqQty && stoneCount === reqQty && sampleCount === reqQty;
+    return {s, colorCount, stoneCount, sampleCount, isComplete};
   });
+
+  const inProgressList = sortedStores.filter(x=>!x.isComplete);
+  const completedList = sortedStores.filter(x=>x.isComplete);
+  const visibleList = activeTab === 'completed' ? completedList : inProgressList;
 
   let html = `
     <div class="header">
       <div>
-        <h1>新店チャート手配台帳</h1>
-        <p>カラーチャート／ストーンチャート／サンプルオプション　各4台　新規出店対応</p>
+        <h1>新店チャート作成状況</h1>
+        <p>カラーチャート／ストーンチャート／サンプルオプション　新規出店対応</p>
       </div>
       <div class="stamp">在庫管理</div>
     </div>
 
-    <div class="section-title">カラーチャート在庫（保管場所別）</div>
-    ${depotRowHtml('colorDepots', 'colorAlloc', 'カラーチャート')}
+    <div class="section-title">カラーチャート作成依頼店舗</div>
+    ${depotRowHtml('colorDepots', 'colorAlloc', 'カラーチャート', true)}
 
-    <div class="section-title">ストーンチャート在庫（保管場所別）</div>
-    ${depotRowHtml('stoneDepots', 'stoneAlloc', 'ストーンチャート')}
+    <div class="section-title">ストーンチャート作成依頼店舗</div>
+    ${depotRowHtml('stoneDepots', 'stoneAlloc', 'ストーンチャート', true)}
 
-    <div class="section-title">サンプルオプション在庫（保管場所別）</div>
-    ${depotRowHtml('sampleDepots', 'sampleAlloc', 'サンプルオプション')}
+    <div class="section-title">サンプルオプション作成依頼店舗</div>
+    ${depotRowHtml('sampleDepots', 'sampleAlloc', 'サンプルオプション', true)}
 
     <div class="section-title">出店店舗（搬入日順）</div>
     <div class="add-store-row">
@@ -643,27 +766,33 @@ function render(){
       </label>
       <button id="addStoreBtn" class="add-store-btn">＋ 店舗を追加</button>
     </div>
+
+    <div class="store-tabs">
+      <button class="store-tab ${activeTab==='inprogress'?'active':''}" data-tab="inprogress">進行中 (${inProgressList.length})</button>
+      <button class="store-tab ${activeTab==='completed'?'active':''}" data-tab="completed">手配完了済み (${completedList.length})</button>
+    </div>
   `;
 
-  sortedStores.forEach(s=>{
+  if(visibleList.length === 0){
+    html += `<div class="empty-tab-msg">${activeTab==='completed' ? 'まだ手配完了済みの店舗はありません。' : '進行中の店舗はありません。'}</div>`;
+  }
+
+  visibleList.forEach(({s, colorCount, stoneCount, sampleCount, isComplete})=>{
     const badge = urgencyBadge(s.delivery);
-    const colorCount = s.colorDone.filter(Boolean).length;
-    const stoneCount = s.stoneDone.filter(Boolean).length;
-    const sampleCount = s.sampleDone.filter(Boolean).length;
+    const reqQty = s.requiredQty || 4;
     const total = colorCount + stoneCount + sampleCount;
-    const isComplete = colorCount === 4 && stoneCount === 4 && sampleCount === 4;
     let statusCls = 'none', statusText = '未着手';
-    if(isComplete){ statusCls='done'; statusText='完了'; }
-    else if(total > 0){ statusCls='partial'; statusText=`進行中 (色${colorCount}/4・石${stoneCount}/4・サンプル${sampleCount}/4)`; }
+    if(isComplete){ statusCls='done'; statusText='手配完了済'; }
+    else if(total > 0){ statusCls='partial'; statusText=`進行中 (色${colorCount}/${reqQty}・石${stoneCount}/${reqQty}・サンプル${sampleCount}/${reqQty})`; }
 
     html += `
     <div class="store-card" data-store="${s.id}">
-      ${isComplete ? '<div class="complete-stamp">完了</div>' : ''}
+      ${isComplete ? '<div class="complete-stamp">手配完了済</div>' : ''}
       <button class="store-delete" data-store="${s.id}" title="この店舗を削除">×</button>
       <div class="store-top">
         <div class="store-name-block">
           <span class="badge ${badge.cls}">${badge.text}</span>
-          <h3>${s.name}</h3>
+          <input type="text" class="store-name-input" value="${s.name}" data-store="${s.id}" data-field="name">
           <div class="dates-edit">
             <label class="date-field">
               <span class="date-field-label">搬入日</span>
@@ -673,13 +802,17 @@ function render(){
               <span class="date-field-label">OPEN</span>
               <input type="date" class="date-input" value="${s.open||''}" data-store="${s.id}" data-field="open">
             </label>
+            <label class="date-field">
+              <span class="date-field-label">必要台数</span>
+              <input type="number" min="1" class="required-qty-input" value="${reqQty}" data-store="${s.id}">
+            </label>
           </div>
         </div>
       </div>
 
       <div class="progress-block">
         <div class="progress-row">
-          <div class="label">カラーチャート ${colorCount}/4</div>
+          <div class="label">カラーチャート ${colorCount}/${reqQty}</div>
           <div class="chips">
             ${s.colorDone.map((v,i)=>`<div class="chip circle ${v?'on':''}" data-store="${s.id}" data-type="color" data-idx="${i}"></div>`).join('')}
           </div>
@@ -689,9 +822,9 @@ function render(){
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="depot">
                 ${depotOptionsHtml('colorDepots', a.depot)}
               </select>
-              <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="qty">
+              <input type="number" min="0" max="${reqQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
-            <span class="alloc-total ${(s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
+            <span class="alloc-total ${(s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==reqQty)?'mismatch':''}">計 ${s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${reqQty}</span>
           </div>
           <div class="sample-meta">
             <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.colorRequestStore || ''}" data-store="${s.id}" data-field="colorRequestStore">
@@ -699,7 +832,7 @@ function render(){
           </div>
         </div>
         <div class="progress-row">
-          <div class="label">ストーンチャート ${stoneCount}/4</div>
+          <div class="label">ストーンチャート ${stoneCount}/${reqQty}</div>
           <div class="chips">
             ${s.stoneDone.map((v,i)=>`<div class="chip diamond ${v?'on':''}" data-store="${s.id}" data-type="stone" data-idx="${i}"></div>`).join('')}
           </div>
@@ -709,9 +842,9 @@ function render(){
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="depot">
                 ${depotOptionsHtml('stoneDepots', a.depot)}
               </select>
-              <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="qty">
+              <input type="number" min="0" max="${reqQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
-            <span class="alloc-total ${(s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
+            <span class="alloc-total ${(s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==reqQty)?'mismatch':''}">計 ${s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${reqQty}</span>
           </div>
           <div class="sample-meta">
             <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.stoneRequestStore || ''}" data-store="${s.id}" data-field="stoneRequestStore">
@@ -719,7 +852,7 @@ function render(){
           </div>
         </div>
         <div class="progress-row">
-          <div class="label">サンプルオプション ${sampleCount}/4</div>
+          <div class="label">サンプルオプション ${sampleCount}/${reqQty}</div>
           <div class="chips">
             ${s.sampleDone.map((v,i)=>`<div class="chip square ${v?'on':''}" data-store="${s.id}" data-type="sample" data-idx="${i}"></div>`).join('')}
           </div>
@@ -729,9 +862,9 @@ function render(){
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="depot">
                 ${depotOptionsHtml('sampleDepots', a.depot)}
               </select>
-              <input type="number" min="0" max="4" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="qty">
+              <input type="number" min="0" max="${reqQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
-            <span class="alloc-total ${(s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==4)?'mismatch':''}">計 ${s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/4</span>
+            <span class="alloc-total ${(s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==reqQty)?'mismatch':''}">計 ${s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${reqQty}</span>
           </div>
           <div class="sample-meta">
             <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.sampleRequestStore || ''}" data-store="${s.id}" data-field="sampleRequestStore">
@@ -794,6 +927,28 @@ function attachHandlers(){
     });
   });
 
+  document.querySelectorAll('.depot-reqdate-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const depotKey = e.target.dataset.depotkey;
+      const id = e.target.dataset.id;
+      const d = state[depotKey].find(x=>x.id===id);
+      if(d) d.requestDate = e.target.value;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.depot-status-select').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const depotKey = e.target.dataset.depotkey;
+      const id = e.target.dataset.id;
+      const d = state[depotKey].find(x=>x.id===id);
+      if(d) d.status = e.target.value;
+      saveState();
+      render();
+    });
+  });
+
   document.querySelectorAll('.depot-delete').forEach(el=>{
     el.addEventListener('click', e=>{
       const depotKey = e.target.dataset.depotkey;
@@ -814,10 +969,28 @@ function attachHandlers(){
   document.querySelectorAll('.depot-add-card').forEach(el=>{
     el.addEventListener('click', e=>{
       const depotKey = e.currentTarget.dataset.depotkey;
-      const name = prompt('新しい保管場所の名前を入力してください（例：福岡倉庫）');
+      const isRequestList = depotKey === 'colorDepots' || depotKey === 'stoneDepots' || depotKey === 'sampleDepots';
+      const name = prompt(isRequestList ? '新しい依頼店舗の名前を入力してください（例：福岡店）' : '新しい保管場所の名前を入力してください（例：福岡倉庫）');
       if(!name) return;
-      state[depotKey].push({id:newId('depot'), name:name, stock:0});
+      state[depotKey].push({id:newId('depot'), name:name, stock:0, requestDate:'', status:'未着手'});
       saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.store-name-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      const v = e.target.value.trim();
+      if(v) s.name = v; else e.target.value = s.name;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.store-tab').forEach(el=>{
+    el.addEventListener('click', e=>{
+      activeTab = e.target.dataset.tab;
       render();
     });
   });
@@ -831,6 +1004,7 @@ function attachHandlers(){
     state.stores.push({
       id:newId('store'), name:name,
       open: openEl.value.trim(), delivery: deliveryEl.value.trim(),
+      requiredQty:4,
       colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
       stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
       sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
@@ -878,16 +1052,17 @@ function attachHandlers(){
   document.querySelectorAll('.qty-input').forEach(el=>{
     el.addEventListener('change', e=>{
       const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      const reqQty = s.requiredQty || 4;
       const allocField = e.target.dataset.alloc;
       const slot = s[allocField][Number(e.target.dataset.slot)];
       let v = Number(e.target.value) || 0;
       if(v < 0) v = 0;
-      if(v > 4) v = 4;
+      if(v > reqQty) v = reqQty;
       slot.qty = v;
 
-      const total = Math.min(4, s[allocField].reduce((sum,a)=>sum+Number(a.qty||0),0));
+      const total = Math.min(reqQty, s[allocField].reduce((sum,a)=>sum+Number(a.qty||0),0));
       const doneField = allocField === 'colorAlloc' ? 'colorDone' : allocField === 'stoneAlloc' ? 'stoneDone' : 'sampleDone';
-      s[doneField] = [0,1,2,3].map(i=>i < total);
+      s[doneField] = Array.from({length:reqQty}, (_,i)=>i < total);
 
       saveState();
       render();
@@ -906,6 +1081,24 @@ function attachHandlers(){
     el.addEventListener('change', e=>{
       const s = state.stores.find(x=>x.id===e.target.dataset.store);
       s.shipStatus = e.target.value;
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.required-qty-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      let v = Number(e.target.value) || 1;
+      if(v < 1) v = 1;
+      s.requiredQty = v;
+      s.colorDone = resizeBoolArray(s.colorDone, v);
+      s.stoneDone = resizeBoolArray(s.stoneDone, v);
+      s.sampleDone = resizeBoolArray(s.sampleDone, v);
+      // 割り振り数量が新しい必要台数を超えていたら切り詰める
+      ['colorAlloc','stoneAlloc','sampleAlloc'].forEach(f=>{
+        s[f].forEach(a=>{ if(Number(a.qty||0) > v) a.qty = v; });
+      });
       saveState();
       render();
     });
