@@ -116,7 +116,7 @@
   .alloc.done b{color:var(--teal-text);}
   .depot-card .name{font-size:12px;color:var(--muted);margin-bottom:6px;font-family:'Quicksand', sans-serif;}
   .depot-card .stockrow{display:flex;align-items:center;gap:8px;}
-  .depot-card input{
+  .depot-card .stockrow input{
     width:56px;font-size:18px;font-weight:700;
     font-family:'Quicksand', sans-serif;
     border:none;border-bottom:1px solid var(--line);
@@ -168,7 +168,28 @@
   }
   .depot-status-select.depot-status-未着手{background:var(--chip-empty);color:var(--muted);}
   .depot-status-select.depot-status-作成中{background:var(--amber);color:var(--amber-text);}
-  .depot-status-select.depot-status-完了{background:var(--teal);color:var(--teal-text);}
+  .depot-status-select.depot-status-本社発送済み{background:var(--red);color:var(--red-text);}
+  .depot-status-select.depot-status-新店発送済み{background:var(--teal);color:var(--teal-text);}
+  .shipto-row{display:flex;gap:6px;align-items:center;width:100%;}
+  .depot-shipto-input{
+    flex:1;box-sizing:border-box;
+    font-size:12px;
+    font-family:'Zen Maru Gothic', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:4px 2px;
+  }
+  .depot-shipqty-input{
+    width:56px;box-sizing:border-box;
+    font-size:12px;text-align:center;
+    font-family:'Quicksand', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:4px 2px;
+  }
+  .depot-shipqty-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .depot-shipto-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .depot-shipto-input::placeholder{color:var(--muted);}
 
   .totals-bar{
     display:flex;gap:18px;flex-wrap:wrap;
@@ -438,14 +459,16 @@ const STORAGE_KEY = 'chart-tracker-state-v1';
 
 // ▼▼▼ ここにFirebaseの設定値を貼り付けてください（手順はREADME参照） ▼▼▼
 const firebaseConfig = {
-  apiKey: "AIzaSyAdlyFQvZqXI3eF4HWHN4_qUdtb-LCgVGY",
-  authDomain: "chart-tracker-d6909.firebaseapp.com",
-  databaseURL: "https://chart-tracker-d6909-default-rtdb.firebaseio.com",
-  projectId: "chart-tracker-d6909",
-  storageBucket: "chart-tracker-d6909.firebasestorage.app",
-  messagingSenderId: "648830849134",
-  appId: "1:648830849134:web:40c510d88994aee9dbd67f"
+  apiKey: "ここに貼り付け",
+  authDomain: "ここに貼り付け",
+  databaseURL: "ここに貼り付け",
+  projectId: "ここに貼り付け",
+  storageBucket: "ここに貼り付け",
+  messagingSenderId: "ここに貼り付け",
+  appId: "ここに貼り付け"
 };
+// ▲▲▲ ここまで ▲▲▲
+
 let db = null;
 let firebaseReady = false;
 try{
@@ -460,19 +483,22 @@ try{
 
 const DEFAULT_STATE = {
   colorDepots: [
-    {id:'honsha', name:'本社', stock:4, requestDate:'', status:'未着手'},
-    {id:'kokura', name:'小倉', stock:4, requestDate:'', status:'未着手'},
-    {id:'roppongi', name:'六本松', stock:10, requestDate:'', status:'未着手'}
+    {id:'honsha', name:'本社', stock:4, requestDate:'', status:'未着手', shipTo:''},
+    {id:'kokura', name:'小倉', stock:4, requestDate:'', status:'未着手', shipTo:''},
+    {id:'roppongi', name:'六本松', stock:10, requestDate:'', status:'未着手', shipTo:''}
   ],
   stoneDepots: [
-    {id:'honsha', name:'本社', stock:1, requestDate:'', status:'未着手'},
-    {id:'kashii', name:'香椎', stock:7, requestDate:'', status:'未着手'},
-    {id:'roppongi', name:'六本松', stock:6, requestDate:'', status:'未着手'}
+    {id:'honsha', name:'本社', stock:1, requestDate:'', status:'未着手', shipTo:''},
+    {id:'kashii', name:'香椎', stock:7, requestDate:'', status:'未着手', shipTo:''},
+    {id:'roppongi', name:'六本松', stock:6, requestDate:'', status:'未着手', shipTo:''}
   ],
   sampleDepots: [
-    {id:'wakayama', name:'和歌山', stock:8, requestDate:'', status:'未着手'},
-    {id:'higashiokazaki', name:'東岡崎', stock:4, requestDate:'', status:'未着手'}
+    {id:'wakayama', name:'和歌山', stock:8, requestDate:'', status:'未着手', shipTo:''},
+    {id:'higashiokazaki', name:'東岡崎', stock:4, requestDate:'', status:'未着手', shipTo:''}
   ],
+  colorStorage: [],
+  stoneStorage: [],
+  sampleStorage: [],
   stores: [
     { id:'kasuga', name:'アクロスモール春日店', open:'2026-09-14', delivery:'2026-09-04', requiredQty:4, colorAlloc:[{depot:'kokura',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'roppongi',qty:4},{depot:'',qty:0}], sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[true,true,true,true], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'博多', sampleRequester:'ななさん依頼済み', shipDate:'2026-09-07', shipStatus:'発送済み', note:'カラー：7月新色にて作成依頼済み、ななさん9/5訪店時に回収　ストーン：異動のらんさん9/7持参依頼済　サンプル：異動のみこさん' },
     { id:'matsusaka', name:'アピタ松坂三雲店', open:'2026-10-08', delivery:'2026-09-30', requiredQty:4, colorAlloc:[{depot:'honsha',qty:4},{depot:'',qty:0}], stoneAlloc:[{depot:'honsha',qty:1},{depot:'kashii',qty:3}], sampleAlloc:[{depot:'higashiokazaki',qty:4},{depot:'',qty:0}], colorDone:[true,true,true,true], stoneDone:[true,true,true,true], sampleDone:[true,true,true,true], colorRequestStore:'', colorRequester:'', stoneRequestStore:'', stoneRequester:'', sampleRequestStore:'東岡崎', sampleRequester:'髙橋', shipDate:'', shipStatus:'未発送', note:'カラー：今池にて新色に変更し直接発送予定9/28　ストーン：本社保管分今池にて貼り付け確認後直送9/28　香椎：搬入日前発送依頼' },
@@ -515,18 +541,26 @@ function migrateState(loaded){
   if(!loaded.sampleDepots){
     loaded.sampleDepots = [];
   }
+  if(!loaded.colorStorage) loaded.colorStorage = [];
+  if(!loaded.stoneStorage) loaded.stoneStorage = [];
+  if(!loaded.sampleStorage) loaded.sampleStorage = [];
   // 倉庫が「固定オブジェクト」形式(旧構造)なら「配列」形式に変換する
-  ['colorDepots','stoneDepots','sampleDepots'].forEach(key=>{
+  ['colorDepots','stoneDepots','sampleDepots','colorStorage','stoneStorage','sampleStorage'].forEach(key=>{
     if(loaded[key] && !Array.isArray(loaded[key])){
       loaded[key] = Object.keys(loaded[key]).map(k=>({id:k, name:k, stock:loaded[key][k]}));
     }
     if(!Array.isArray(loaded[key])) loaded[key] = [];
   });
-  // 作成依頼店舗（カラー・ストーン・サンプル）には依頼日・状況を補完する
+  // 作成依頼店舗（カラー・ストーン・サンプル）には依頼日・状況・発送先を補完する
   ['colorDepots','stoneDepots','sampleDepots'].forEach(key=>{
     loaded[key].forEach(d=>{
       if(d.requestDate === undefined) d.requestDate = '';
       if(d.status === undefined) d.status = '未着手';
+      if(d.shipTo === undefined) d.shipTo = '';
+      if(d.shipQty === undefined) d.shipQty = 0;
+      if(d.status === '完了') d.status = '新店発送済み';
+      if(d.shipToSynced === undefined) d.shipToSynced = d.shipTo || '';
+      if(d.shipQtySynced === undefined) d.shipQtySynced = Number(d.shipQty)||0;
     });
   });
   (loaded.stores||[]).forEach(s=>{
@@ -651,6 +685,34 @@ function computeAllocation(depotKey, allocField){
   return alloc;
 }
 
+function storageRowHtml(storageKey, unitNote){
+  const totalStock = state[storageKey].reduce((sum,d)=>sum+Number(d.stock||0),0);
+  const cards = state[storageKey].map(d=>{
+    const stock = Number(d.stock||0);
+    return `
+    <div class="depot-card">
+      <button class="depot-delete" data-depotkey="${storageKey}" data-id="${d.id}" title="この保管場所を削除">×</button>
+      <input type="text" class="depot-name-input" value="${d.name}" placeholder="保管場所名" data-depotkey="${storageKey}" data-id="${d.id}">
+      <div class="stockrow">
+        <input type="number" min="0" value="${stock}" data-depotkey="${storageKey}" data-id="${d.id}" class="depot-input">
+        <span style="font-size:11px;color:var(--muted);">セット</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="depot-row">
+      ${cards}
+      <div class="depot-card depot-add-card" data-depotkey="${storageKey}">
+        <div class="depot-add-inner">＋ 保管場所を追加</div>
+      </div>
+    </div>
+    <div class="totals-bar">
+      <span>${unitNote}保管場所 合計在庫 <b>${totalStock}</b></span>
+    </div>
+  `;
+}
+
 function depotRowHtml(depotKey, allocField, unitNote, showRequestFields){
   const alloc = computeAllocation(depotKey, allocField);
   const totalStock = state[depotKey].reduce((sum,d)=>sum+Number(d.stock||0),0);
@@ -684,8 +746,13 @@ function depotRowHtml(depotKey, allocField, unitNote, showRequestFields){
         <select class="depot-status-select depot-status-${status}" data-depotkey="${depotKey}" data-id="${d.id}">
           <option value="未着手" ${status==='未着手'?'selected':''}>未着手</option>
           <option value="作成中" ${status==='作成中'?'selected':''}>作成中</option>
-          <option value="完了" ${status==='完了'?'selected':''}>手配完了済</option>
+          <option value="本社発送済み" ${status==='本社発送済み'?'selected':''}>本社発送済み</option>
+          <option value="新店発送済み" ${status==='新店発送済み'?'selected':''}>新店発送済み</option>
         </select>
+        <div class="shipto-row">
+          <input type="text" class="depot-shipto-input" placeholder="発送先" value="${d.shipTo || ''}" data-depotkey="${depotKey}" data-id="${d.id}">
+          <input type="number" min="0" class="depot-shipqty-input" placeholder="セット数" value="${d.shipQty || ''}" data-depotkey="${depotKey}" data-id="${d.id}">
+        </div>
       </div>` : ''}
     </div>`;
   }).join('');
@@ -745,11 +812,20 @@ function render(){
     <div class="section-title">カラーチャート作成依頼店舗</div>
     ${depotRowHtml('colorDepots', 'colorAlloc', 'カラーチャート', true)}
 
+    <div class="section-title">カラーチャート保管場所</div>
+    ${storageRowHtml('colorStorage', 'カラーチャート')}
+
     <div class="section-title">ストーンチャート作成依頼店舗</div>
     ${depotRowHtml('stoneDepots', 'stoneAlloc', 'ストーンチャート', true)}
 
+    <div class="section-title">ストーンチャート保管場所</div>
+    ${storageRowHtml('stoneStorage', 'ストーンチャート')}
+
     <div class="section-title">サンプルオプション作成依頼店舗</div>
     ${depotRowHtml('sampleDepots', 'sampleAlloc', 'サンプルオプション', true)}
+
+    <div class="section-title">サンプルオプション保管場所</div>
+    ${storageRowHtml('sampleStorage', 'サンプルオプション')}
 
     <div class="section-title">出店店舗（搬入日順）</div>
     <div class="add-store-row">
@@ -947,6 +1023,66 @@ function attachHandlers(){
     });
   });
 
+  const storageKeyMap = {colorDepots:'colorStorage', stoneDepots:'stoneStorage', sampleDepots:'sampleStorage'};
+
+  function syncShipToStorage(depotKey, d){
+    const storageKey = storageKeyMap[depotKey];
+    if(!storageKey) return;
+
+    const prevName = d.shipToSynced || '';
+    const prevQty = Number(d.shipQtySynced) || 0;
+
+    // 前回この依頼から反映した分をいったん取り消す
+    if(prevName){
+      const prevEntry = state[storageKey].find(x=>x.name === prevName);
+      if(prevEntry) prevEntry.stock = Math.max(0, Number(prevEntry.stock||0) - prevQty);
+    }
+
+    const newName = d.shipTo || '';
+    const newQty = Number(d.shipQty) || 0;
+
+    // 新しい発送先・数量分を反映する（同名の保管場所があれば加算、無ければ新規作成）
+    if(newName && newQty > 0){
+      let entry = state[storageKey].find(x=>x.name === newName);
+      if(!entry){
+        entry = {id:newId('depot'), name:newName, stock:0};
+        state[storageKey].push(entry);
+      }
+      entry.stock = Number(entry.stock||0) + newQty;
+    }
+
+    d.shipToSynced = newName;
+    d.shipQtySynced = newQty;
+  }
+
+  document.querySelectorAll('.depot-shipto-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const depotKey = e.target.dataset.depotkey;
+      const id = e.target.dataset.id;
+      const d = state[depotKey].find(x=>x.id===id);
+      if(!d) return;
+      d.shipTo = e.target.value.trim();
+      syncShipToStorage(depotKey, d);
+      saveState();
+      render();
+    });
+  });
+
+  document.querySelectorAll('.depot-shipqty-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const depotKey = e.target.dataset.depotkey;
+      const id = e.target.dataset.id;
+      const d = state[depotKey].find(x=>x.id===id);
+      if(!d) return;
+      let v = Number(e.target.value) || 0;
+      if(v < 0) v = 0;
+      d.shipQty = v;
+      syncShipToStorage(depotKey, d);
+      saveState();
+      render();
+    });
+  });
+
   document.querySelectorAll('.depot-delete').forEach(el=>{
     el.addEventListener('click', e=>{
       const depotKey = e.target.dataset.depotkey;
@@ -970,7 +1106,7 @@ function attachHandlers(){
       const isRequestList = depotKey === 'colorDepots' || depotKey === 'stoneDepots' || depotKey === 'sampleDepots';
       const name = prompt(isRequestList ? '新しい依頼店舗の名前を入力してください（例：福岡店）' : '新しい保管場所の名前を入力してください（例：福岡倉庫）');
       if(!name) return;
-      state[depotKey].push({id:newId('depot'), name:name, stock:0, requestDate:'', status:'未着手'});
+      state[depotKey].push({id:newId('depot'), name:name, stock:0, requestDate:'', status:'未着手', shipTo:'', shipQty:0, shipToSynced:'', shipQtySynced:0});
       saveState();
       render();
     });
