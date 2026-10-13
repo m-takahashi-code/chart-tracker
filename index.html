@@ -13,16 +13,16 @@
   :root{
     --paper:#FDF3F6;
     --card:#FFFFFF;
-    --ink:#5B4A52;
-    --muted:#B99AA6;
-    --line:#F5DCE4;
-    --chip-empty:#FAECEF;
-    --red:#F2A6B4;
-    --red-text:#C05C72;
-    --teal:#8FD8C8;
-    --teal-text:#3E9683;
-    --amber:#FAD08A;
-    --amber-text:#C98A3A;
+    --ink:#33252C;
+    --muted:#7A5B69;
+    --line:#E3B9C7;
+    --chip-empty:#F3D5DE;
+    --red:#EC8499;
+    --red-text:#9C3350;
+    --teal:#62C4AC;
+    --teal-text:#1B6A56;
+    --amber:#F4B84F;
+    --amber-text:#8E5A0C;
     --shadow-line:#00000010;
   }
   *{box-sizing:border-box;}
@@ -33,7 +33,7 @@
     font-family:'Zen Maru Gothic', sans-serif;
     padding:32px 20px 60px;
   }
-  .wrap{max-width:920px;margin:0 auto;}
+  .wrap{max-width:1240px;margin:0 auto;}
 
   /* header */
   .header{
@@ -49,20 +49,20 @@
   .header h1{
     font-family:'Kiwi Maru', serif;
     font-weight:700;
-    font-size:26px;
+    font-size:30px;
     margin:0 0 4px;
     letter-spacing:.03em;
   }
   .header p{
     margin:0;
-    font-size:13px;
+    font-size:15px;
     color:var(--muted);
     font-family:'Quicksand', sans-serif;
   }
   .stamp{
     font-family:'Kiwi Maru', serif;
     font-weight:500;
-    font-size:13px;
+    font-size:15px;
     color:var(--red-text);
     background:var(--chip-empty);
     border:2px solid var(--red);
@@ -75,7 +75,7 @@
   /* inventory */
   .section-title{
     font-family:'Kiwi Maru', serif;
-    font-size:15px;
+    font-size:17px;
     font-weight:700;
     margin:0 0 10px;
     display:flex;
@@ -110,33 +110,33 @@
   }
   .alloc-done-badge{
     display:inline-block;margin-left:6px;
-    font-size:10px;font-weight:700;color:var(--teal-text);
+    font-size:12px;font-weight:700;color:var(--teal-text);
     background:var(--teal);border-radius:10px;padding:1px 8px;
   }
   .alloc.done b{color:var(--teal-text);}
-  .depot-card .name{font-size:12px;color:var(--muted);margin-bottom:6px;font-family:'Quicksand', sans-serif;}
+  .depot-card .name{font-size:14px;color:var(--muted);margin-bottom:6px;font-family:'Quicksand', sans-serif;}
   .depot-card .stockrow{display:flex;align-items:center;gap:8px;}
   .depot-card .stockrow input{
-    width:56px;font-size:18px;font-weight:700;
+    width:56px;font-size:21px;font-weight:700;
     font-family:'Quicksand', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
     padding:2px 0;
   }
   .depot-card input:focus{outline:none;border-bottom:1px solid var(--ink);}
-  .depot-card .alloc{font-size:11px;color:var(--muted);margin-top:6px;}
+  .depot-card .alloc{font-size:13px;color:var(--muted);margin-top:6px;}
   .depot-card .alloc b{color:var(--ink);}
   .depot-card .alloc.warn b{color:var(--red-text);}
   .depot-name-input{
     display:block;width:100%;
-    font-size:12px !important;font-weight:500 !important;
+    font-size:14px !important;font-weight:500 !important;
     color:var(--muted) !important;
     margin-bottom:6px;
   }
   .depot-delete{
     position:absolute;top:6px;right:8px;
     background:none;border:none;
-    color:var(--muted);font-size:14px;
+    color:var(--muted);font-size:16px;
     cursor:pointer;line-height:1;padding:2px 4px;
   }
   .depot-delete:hover{color:var(--red-text);}
@@ -146,7 +146,7 @@
     background:transparent;cursor:pointer;
     min-height:70px;
   }
-  .depot-add-inner{font-size:12px;color:var(--muted);font-family:'Quicksand', sans-serif;}
+  .depot-add-inner{font-size:14px;color:var(--muted);font-family:'Quicksand', sans-serif;}
   .depot-add-card:hover{border-color:var(--teal);}
   .depot-add-card:hover .depot-add-inner{color:var(--teal-text);}
   .depot-request-fields{
@@ -155,13 +155,13 @@
   }
   .depot-request-fields .date-field{width:100%;}
   .depot-request-fields .date-input{
-    width:100%;box-sizing:border-box;font-size:12px;
+    width:100%;box-sizing:border-box;font-size:14px;
   }
   .depot-request-fields .depot-status-select{
-    width:100%;box-sizing:border-box;text-align:center;padding:5px 8px;font-size:11px;
+    width:100%;box-sizing:border-box;text-align:center;padding:5px 8px;font-size:13px;
   }
   .depot-status-select{
-    font-size:11px;font-weight:700;
+    font-size:13px;font-weight:700;
     font-family:'Zen Maru Gothic', sans-serif;
     border:none;border-radius:20px;
     padding:4px 10px;cursor:pointer;
@@ -173,7 +173,7 @@
   .shipto-row{display:flex;gap:6px;align-items:center;width:100%;}
   .depot-shipto-input{
     flex:1;box-sizing:border-box;
-    font-size:12px;
+    font-size:14px;
     font-family:'Zen Maru Gothic', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -181,7 +181,7 @@
   }
   .depot-shipqty-input{
     width:56px;box-sizing:border-box;
-    font-size:12px;text-align:center;
+    font-size:14px;text-align:center;
     font-family:'Quicksand', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -194,14 +194,14 @@
   .totals-bar{
     display:flex;gap:18px;flex-wrap:wrap;
     font-family:'Quicksand', sans-serif;
-    font-size:13px;
+    font-size:15px;
     background:var(--card);
     border:1px solid var(--line);
     border-radius:14px;
     padding:10px 16px;
     margin-bottom:30px;
   }
-  .totals-bar span b{font-size:16px;}
+  .totals-bar span b{font-size:18px;}
 
   .add-store-row{
     display:flex;gap:10px;flex-wrap:wrap;align-items:center;
@@ -212,7 +212,7 @@
     margin-bottom:14px;
   }
   .add-store-input{
-    font-size:13px;
+    font-size:15px;
     font-family:'Zen Maru Gothic', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -220,18 +220,27 @@
   }
   .add-store-input-small{flex:0 0 170px;min-width:120px;}
   .date-field{display:flex;flex-direction:column;gap:2px;}
-  .date-field-label{font-size:10px;color:var(--muted);font-family:'Quicksand', sans-serif;}
+  .date-field-label{font-size:12px;color:var(--muted);font-family:'Quicksand', sans-serif;}
   .dates-edit{display:flex;gap:14px;margin-top:4px;}
   .date-input{
-    font-size:12px;
+    font-size:14px;
     font-family:'Quicksand', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
     padding:3px 2px;
   }
   .date-input:focus{outline:none;border-bottom:1px solid var(--ink);}
+  .chips-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .qty-stepper{display:flex;align-items:center;gap:4px;}
+  .qty-step{
+    width:24px;height:24px;border-radius:50%;
+    border:1.5px solid var(--line);background:var(--card);
+    color:var(--ink);font-size:15px;line-height:1;cursor:pointer;padding:0;
+  }
+  .qty-step:hover{border-color:var(--teal);color:var(--teal-text);}
+  .qty-unit{font-size:13px;color:var(--muted);}
   .required-qty-input{
-    width:48px;font-size:12px;
+    width:48px;font-size:14px;
     font-family:'Quicksand', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -242,7 +251,7 @@
   .add-store-btn{
     background:var(--teal);border:none;color:var(--teal-text);
     font-family:'Zen Maru Gothic', sans-serif;font-weight:700;
-    font-size:13px;padding:8px 16px;border-radius:20px;
+    font-size:15px;padding:8px 16px;border-radius:20px;
     cursor:pointer;white-space:nowrap;
   }
   .add-store-btn:hover{opacity:.85;}
@@ -251,13 +260,21 @@
   .store-tab{
     background:var(--chip-empty);border:none;color:var(--muted);
     font-family:'Zen Maru Gothic', sans-serif;font-weight:700;
-    font-size:13px;padding:8px 18px;border-radius:20px;
+    font-size:15px;padding:8px 18px;border-radius:20px;
     cursor:pointer;
   }
+  .depot-tab{
+    background:var(--chip-empty);border:none;color:var(--muted);
+    font-family:'Zen Maru Gothic', sans-serif;font-weight:700;
+    font-size:14px;padding:6px 16px;border-radius:20px;
+    cursor:pointer;
+  }
+  .depot-tab.active{background:var(--teal);color:var(--teal-text);}
+  .depot-tab:hover{opacity:.9;}
   .store-tab.active{background:var(--teal);color:var(--teal-text);}
   .store-tab:hover{opacity:.9;}
   .empty-tab-msg{
-    text-align:center;color:var(--muted);font-size:13px;
+    text-align:center;color:var(--muted);font-size:15px;
     padding:30px 0;font-family:'Zen Maru Gothic', sans-serif;
   }
 
@@ -274,7 +291,7 @@
   .store-delete{
     position:absolute;top:14px;right:14px;
     background:none;border:none;
-    color:var(--muted);font-size:16px;
+    color:var(--muted);font-size:18px;
     cursor:pointer;line-height:1;padding:4px 6px;
     z-index:2;
   }
@@ -287,7 +304,7 @@
   .store-name-block .badge{
     display:inline-block;
     font-family:'Quicksand', sans-serif;
-    font-size:11px;
+    font-size:13px;
     font-weight:700;
     padding:2px 8px;
     border-radius:12px;
@@ -299,12 +316,12 @@
   .badge.tbd{background:var(--chip-empty);color:var(--muted);}
   .store-name-block h3{
     font-family:'Kiwi Maru', serif;
-    font-size:18px;margin:0 0 4px;
+    font-size:21px;margin:0 0 4px;
   }
   .store-name-input{
     display:block;
     font-family:'Kiwi Maru', serif;
-    font-size:18px;font-weight:500;
+    font-size:21px;font-weight:500;
     color:var(--ink);
     border:none;border-bottom:1px solid transparent;
     background:transparent;
@@ -313,10 +330,10 @@
   }
   .store-name-input:hover{border-bottom:1px solid var(--line);}
   .store-name-input:focus{outline:none;border-bottom:1px solid var(--ink);}
-  .dates{font-size:12px;color:var(--muted);font-family:'Quicksand', sans-serif;}
+  .dates{font-size:14px;color:var(--muted);font-family:'Quicksand', sans-serif;}
 
   .depot-select{
-    font-size:12px;
+    font-size:14px;
     font-family:'Zen Kaku Gothic New', sans-serif;
     border:1px solid var(--line);
     border-radius:10px;
@@ -327,11 +344,11 @@
 
   .progress-block{display:flex;gap:26px;flex-wrap:wrap;margin-bottom:12px;}
   .progress-row{display:flex;flex-direction:column;gap:6px;}
-  .progress-row .label{font-size:11px;color:var(--muted);font-family:'Quicksand', sans-serif;letter-spacing:.05em;}
+  .progress-row .label{font-size:13px;color:var(--muted);font-family:'Quicksand', sans-serif;letter-spacing:.05em;}
   .chips{display:flex;gap:6px;}
   .sample-meta{display:flex;gap:8px;margin-top:2px;}
   .mini-input{
-    font-size:11px;
+    font-size:13px;
     font-family:'Zen Maru Gothic', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -340,7 +357,7 @@
   .mini-input:focus{outline:none;border-bottom:1px solid var(--ink);}
   .mini-input::placeholder{color:var(--muted);}
   .mini-select{
-    font-size:11px;
+    font-size:13px;
     font-family:'Zen Maru Gothic', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -350,7 +367,7 @@
   .alloc-slots{display:flex;gap:8px;align-items:center;margin-top:2px;flex-wrap:wrap;}
   .alloc-slot{display:flex;gap:4px;align-items:center;}
   .qty-input{
-    width:32px;font-size:11px;
+    width:32px;font-size:13px;
     font-family:'Quicksand', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -358,7 +375,7 @@
   }
   .qty-input:focus{outline:none;border-bottom:1px solid var(--ink);}
   .alloc-total{
-    font-size:11px;font-family:'Quicksand', sans-serif;font-weight:600;
+    font-size:13px;font-family:'Quicksand', sans-serif;font-weight:600;
     color:var(--teal-text);
   }
   .alloc-total.mismatch{color:var(--amber-text);}
@@ -388,9 +405,17 @@
     margin-top:6px;padding-top:10px;
     border-top:1px dashed var(--line);
   }
-  .ship-label{font-size:11px;color:var(--muted);font-family:'Quicksand', sans-serif;letter-spacing:.05em;}
+  .ship-label{font-size:13px;color:var(--muted);font-family:'Quicksand', sans-serif;letter-spacing:.05em;}
+  .ship-count-input{
+    width:56px;font-size:14px;text-align:center;
+    font-family:'Quicksand', sans-serif;
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;color:var(--ink);
+    padding:3px 2px;
+  }
+  .ship-count-input:focus{outline:none;border-bottom:1px solid var(--ink);}
   .ship-status-select{
-    font-size:12px;font-weight:700;
+    font-size:14px;font-weight:700;
     font-family:'Zen Maru Gothic', sans-serif;
     border:none;border-radius:20px;
     padding:5px 12px;cursor:pointer;
@@ -400,7 +425,7 @@
   .ship-status-select.ship-status-到着済み{background:var(--teal);color:var(--teal-text);}
   .status-label{
     font-family:'Quicksand', sans-serif;
-    font-size:12px;font-weight:700;
+    font-size:14px;font-weight:700;
   }
   .status-label.done{color:var(--teal-text);}
   .status-label.partial{color:var(--amber-text);}
@@ -408,7 +433,7 @@
 
   .note-input{
     flex:1;min-width:160px;
-    font-size:12px;
+    font-size:14px;
     font-family:'Zen Kaku Gothic New', sans-serif;
     border:none;border-bottom:1px solid var(--line);
     background:transparent;color:var(--ink);
@@ -421,7 +446,7 @@
     top:14px;right:14px;
     font-family:'Kiwi Maru', serif;
     font-weight:500;
-    font-size:13px;
+    font-size:15px;
     color:var(--teal-text);
     background:#fff;
     border:2px solid var(--teal);
@@ -436,17 +461,39 @@
 
   .footer-bar{
     display:flex;justify-content:space-between;align-items:center;
-    margin-top:24px;font-size:11px;color:var(--muted);
+    margin-top:24px;font-size:13px;color:var(--muted);
     font-family:'Quicksand', sans-serif;
   }
   .reset-btn{
     background:none;border:1px solid var(--line);
     border-radius:10px;padding:6px 12px;
-    font-size:11px;color:var(--muted);cursor:pointer;
+    font-size:13px;color:var(--muted);cursor:pointer;
     font-family:'Quicksand', sans-serif;
   }
   .reset-btn:hover{border-color:var(--red);color:var(--red);}
-  .loading{padding:40px;text-align:center;color:var(--muted);font-family:'Quicksand', sans-serif;font-size:13px;}
+  .loading{padding:40px;text-align:center;color:var(--muted);font-family:'Quicksand', sans-serif;font-size:15px;}
+
+  /* 作成依頼店舗：横長1行レイアウト */
+  .depot-row.has-request-fields{grid-template-columns:1fr;gap:10px;}
+  .depot-row.has-request-fields .depot-card:not(.depot-add-card){
+    display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;
+    padding:12px 44px 12px 16px;
+  }
+  .depot-row.has-request-fields .depot-name-input{
+    width:150px;margin:0;flex:0 0 auto;
+  }
+  .depot-row.has-request-fields .stockrow{flex:0 0 auto;}
+  .depot-row.has-request-fields .alloc{margin:0;flex:0 0 auto;min-width:150px;}
+  .depot-row.has-request-fields .depot-request-fields{
+    flex:1 1 560px;flex-direction:row;align-items:center;flex-wrap:wrap;
+    gap:10px 18px;margin:0;padding:0;border-top:none;
+  }
+  .depot-row.has-request-fields .depot-request-fields .date-field{width:auto;}
+  .depot-row.has-request-fields .depot-request-fields .date-input{width:auto;}
+  .depot-row.has-request-fields .depot-request-fields .depot-status-select{width:auto;min-width:120px;}
+  .depot-row.has-request-fields .shipto-row{flex:1 1 220px;min-width:200px;width:auto;}
+  .depot-row.has-request-fields .depot-delete{top:50%;transform:translateY(-50%);right:14px;font-size:18px;}
+  .depot-row.has-request-fields .depot-add-card{min-height:48px;}
 </style>
 </head>
 <body>
@@ -459,13 +506,13 @@ const STORAGE_KEY = 'chart-tracker-state-v1';
 
 // ▼▼▼ ここにFirebaseの設定値を貼り付けてください（手順はREADME参照） ▼▼▼
 const firebaseConfig = {
-  apiKey: "AIzaSyAdlyFQvZqXI3eF4HWHN4_qUdtb-LCgVGY",
-  authDomain: "chart-tracker-d6909.firebaseapp.com",
-  databaseURL: "https://chart-tracker-d6909-default-rtdb.firebaseio.com",
-  projectId: "chart-tracker-d6909",
-  storageBucket: "chart-tracker-d6909.firebasestorage.app",
-  messagingSenderId: "648830849134",
-  appId: "1:648830849134:web:40c510d88994aee9dbd67f"
+  apiKey: "ここに貼り付け",
+  authDomain: "ここに貼り付け",
+  databaseURL: "ここに貼り付け",
+  projectId: "ここに貼り付け",
+  storageBucket: "ここに貼り付け",
+  messagingSenderId: "ここに貼り付け",
+  appId: "ここに貼り付け"
 };
 // ▲▲▲ ここまで ▲▲▲
 
@@ -520,6 +567,13 @@ function newId(prefix){
 
 function isIsoDate(str){
   return /^\d{4}-\d{2}-\d{2}$/.test(str||'');
+}
+
+function qtyOf(s, type){
+  return Number(s[type+'Qty']) || Number(s.requiredQty) || 4;
+}
+function typeOfAllocField(f){
+  return f==='colorAlloc' ? 'color' : f==='stoneAlloc' ? 'stone' : 'sample';
 }
 
 function resizeBoolArray(arr, size){
@@ -587,10 +641,12 @@ function migrateState(loaded){
     if(s.sampleRequester === undefined) s.sampleRequester = '';
     if(s.shipDate === undefined) s.shipDate = '';
     if(s.shipStatus === undefined) s.shipStatus = '未発送';
+    if(s.shipCount === undefined) s.shipCount = 0;
     if(s.requiredQty === undefined || !Number(s.requiredQty)) s.requiredQty = 4;
-    s.colorDone = resizeBoolArray(s.colorDone, s.requiredQty);
-    s.stoneDone = resizeBoolArray(s.stoneDone, s.requiredQty);
-    s.sampleDone = resizeBoolArray(s.sampleDone, s.requiredQty);
+    ['color','stone','sample'].forEach(t=>{
+      if(!Number(s[t+'Qty'])) s[t+'Qty'] = s.requiredQty;
+      s[t+'Done'] = resizeBoolArray(s[t+'Done'], s[t+'Qty']);
+    });
     if(s.open && !isIsoDate(s.open)){
       s.note = (s.note ? s.note + '　' : '') + `[旧OPEN日:${s.open}]`;
       s.open = '';
@@ -695,7 +751,7 @@ function storageRowHtml(storageKey, unitNote){
       <input type="text" class="depot-name-input" value="${d.name}" placeholder="保管場所名" data-depotkey="${storageKey}" data-id="${d.id}">
       <div class="stockrow">
         <input type="number" min="0" value="${stock}" data-depotkey="${storageKey}" data-id="${d.id}" class="depot-input">
-        <span style="font-size:11px;color:var(--muted);">セット</span>
+        <span style="font-size:13px;color:var(--muted);">セット</span>
       </div>
     </div>`;
   }).join('');
@@ -717,21 +773,21 @@ function depotRowHtml(depotKey, allocField, unitNote, showRequestFields){
   const alloc = computeAllocation(depotKey, allocField);
   const totalStock = state[depotKey].reduce((sum,d)=>sum+Number(d.stock||0),0);
   const totalAlloc = Object.values(alloc).reduce((a,b)=>a+b,0);
-  const totalRequired = state.stores.reduce((sum,s)=>sum+Number(s.requiredQty||4),0);
-  const cards = state[depotKey].map(d=>{
+  const totalRequired = state.stores.reduce((sum,s)=>sum+qtyOf(s, typeOfAllocField(allocField)),0);
+  const cardItems = state[depotKey].map(d=>{
     const stock = Number(d.stock||0);
     const used = alloc[d.id]||0;
     const remain = stock - used;
     const warn = remain < 0;
     const allocDone = stock > 0 && remain === 0;
     const status = d.status || '未着手';
-    return `
+    return {allocDone, html: `
     <div class="depot-card ${allocDone ? 'depot-card-alloc-done' : ''}">
       <button class="depot-delete" data-depotkey="${depotKey}" data-id="${d.id}" title="この${showRequestFields?'依頼店舗':'保管場所'}を削除">×</button>
       <input type="text" class="depot-name-input" value="${d.name}" placeholder="${showRequestFields?'依頼店舗名':'保管場所名'}" data-depotkey="${depotKey}" data-id="${d.id}">
       <div class="stockrow">
         <input type="number" min="0" value="${stock}" data-depotkey="${depotKey}" data-id="${d.id}" class="depot-input">
-        <span style="font-size:11px;color:var(--muted);">セット</span>
+        <span style="font-size:13px;color:var(--muted);">セット</span>
       </div>
       <div class="alloc ${warn?'warn':''} ${allocDone?'done':''}">
         振分済み <b>${used}</b> ／ 残 <b>${remain}</b>
@@ -754,15 +810,31 @@ function depotRowHtml(depotKey, allocField, unitNote, showRequestFields){
           <input type="number" min="0" class="depot-shipqty-input" placeholder="セット数" value="${d.shipQty || ''}" data-depotkey="${depotKey}" data-id="${d.id}">
         </div>
       </div>` : ''}
-    </div>`;
-  }).join('');
+    </div>`};
+  });
+
+  const doneCount = cardItems.filter(x=>x.allocDone).length;
+  const activeCount = cardItems.length - doneCount;
+  const tab = depotTabs[depotKey] || 'active';
+  const visibleItems = showRequestFields ? cardItems.filter(x=> tab==='done' ? x.allocDone : !x.allocDone) : cardItems;
+  const cards = visibleItems.map(x=>x.html).join('');
+  const showAddCard = !showRequestFields || tab === 'active';
+  const emptyMsg = (showRequestFields && tab==='done' && visibleItems.length===0)
+    ? '<div class="empty-tab-msg" style="grid-column:1/-1;">まだ振分完了の依頼店舗はありません。</div>' : '';
+  const tabsHtml = showRequestFields ? `
+    <div class="store-tabs">
+      <button class="depot-tab ${tab==='active'?'active':''}" data-depotkey="${depotKey}" data-tab="active">振分中 (${activeCount})</button>
+      <button class="depot-tab ${tab==='done'?'active':''}" data-depotkey="${depotKey}" data-tab="done">振分完了 (${doneCount})</button>
+    </div>` : '';
 
   return `
+    ${tabsHtml}
     <div class="depot-row ${showRequestFields ? 'has-request-fields' : ''}">
       ${cards}
-      <div class="depot-card depot-add-card" data-depotkey="${depotKey}">
+      ${emptyMsg}
+      ${showAddCard ? `<div class="depot-card depot-add-card" data-depotkey="${depotKey}">
         <div class="depot-add-inner">＋ ${showRequestFields ? '依頼店舗を追加' : '保管場所を追加'}</div>
-      </div>
+      </div>` : ''}
     </div>
     <div class="totals-bar">
       <span>${unitNote}合計在庫 <b>${totalStock}</b></span>
@@ -778,6 +850,7 @@ function depotOptionsHtml(depotKey, selectedId){
 }
 
 let activeTab = 'inprogress';
+const depotTabs = {colorDepots:'active', stoneDepots:'active', sampleDepots:'active'};
 
 function render(){
   const app = document.getElementById('app');
@@ -791,8 +864,7 @@ function render(){
     const colorCount = s.colorDone.filter(Boolean).length;
     const stoneCount = s.stoneDone.filter(Boolean).length;
     const sampleCount = s.sampleDone.filter(Boolean).length;
-    const reqQty = s.requiredQty || 4;
-    const isComplete = colorCount === reqQty && stoneCount === reqQty && sampleCount === reqQty;
+    const isComplete = colorCount === qtyOf(s,'color') && stoneCount === qtyOf(s,'stone') && sampleCount === qtyOf(s,'sample');
     return {s, colorCount, stoneCount, sampleCount, isComplete};
   });
 
@@ -853,11 +925,11 @@ function render(){
 
   visibleList.forEach(({s, colorCount, stoneCount, sampleCount, isComplete})=>{
     const badge = urgencyBadge(s.delivery);
-    const reqQty = s.requiredQty || 4;
+    const cQty = qtyOf(s,'color'), tQty = qtyOf(s,'stone'), pQty = qtyOf(s,'sample');
     const total = colorCount + stoneCount + sampleCount;
     let statusCls = 'none', statusText = '未着手';
     if(isComplete){ statusCls='done'; statusText='手配完了済'; }
-    else if(total > 0){ statusCls='partial'; statusText=`進行中 (色${colorCount}/${reqQty}・石${stoneCount}/${reqQty}・サンプル${sampleCount}/${reqQty})`; }
+    else if(total > 0){ statusCls='partial'; statusText=`進行中 (色${colorCount}/${cQty}・石${stoneCount}/${tQty}・サンプル${sampleCount}/${pQty})`; }
 
     html += `
     <div class="store-card" data-store="${s.id}">
@@ -876,19 +948,18 @@ function render(){
               <span class="date-field-label">OPEN</span>
               <input type="date" class="date-input" value="${s.open||''}" data-store="${s.id}" data-field="open">
             </label>
-            <label class="date-field">
-              <span class="date-field-label">必要台数</span>
-              <input type="number" min="1" class="required-qty-input" value="${reqQty}" data-store="${s.id}">
-            </label>
           </div>
         </div>
       </div>
 
       <div class="progress-block">
         <div class="progress-row">
-          <div class="label">カラーチャート ${colorCount}/${reqQty}</div>
+          <div class="label">カラーチャート ${colorCount}/${cQty}</div>
+          <div class="chips-row">
           <div class="chips">
             ${s.colorDone.map((v,i)=>`<div class="chip circle ${v?'on':''}" data-store="${s.id}" data-type="color" data-idx="${i}"></div>`).join('')}
+          </div>
+          <div class="qty-stepper" title="手配数"><button type="button" class="qty-step" data-store="${s.id}" data-type="color" data-delta="-1">−</button><input type="number" min="1" class="required-qty-input" value="${cQty}" data-store="${s.id}" data-type="color"><button type="button" class="qty-step" data-store="${s.id}" data-type="color" data-delta="1">＋</button><span class="qty-unit">台</span></div>
           </div>
           <div class="alloc-slots">
             ${s.colorAlloc.map((a,i)=>`
@@ -896,9 +967,9 @@ function render(){
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="depot">
                 ${depotOptionsHtml('colorDepots', a.depot)}
               </select>
-              <input type="number" min="0" max="${reqQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="qty">
+              <input type="number" min="0" max="${cQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="colorAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
-            <span class="alloc-total ${(s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==reqQty)?'mismatch':''}">計 ${s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${reqQty}</span>
+            <span class="alloc-total ${(s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==cQty)?'mismatch':''}">計 ${s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${cQty}</span>
           </div>
           <div class="sample-meta">
             <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.colorRequestStore || ''}" data-store="${s.id}" data-field="colorRequestStore">
@@ -906,9 +977,12 @@ function render(){
           </div>
         </div>
         <div class="progress-row">
-          <div class="label">ストーンチャート ${stoneCount}/${reqQty}</div>
+          <div class="label">ストーンチャート ${stoneCount}/${tQty}</div>
+          <div class="chips-row">
           <div class="chips">
             ${s.stoneDone.map((v,i)=>`<div class="chip diamond ${v?'on':''}" data-store="${s.id}" data-type="stone" data-idx="${i}"></div>`).join('')}
+          </div>
+          <div class="qty-stepper" title="手配数"><button type="button" class="qty-step" data-store="${s.id}" data-type="stone" data-delta="-1">−</button><input type="number" min="1" class="required-qty-input" value="${tQty}" data-store="${s.id}" data-type="stone"><button type="button" class="qty-step" data-store="${s.id}" data-type="stone" data-delta="1">＋</button><span class="qty-unit">台</span></div>
           </div>
           <div class="alloc-slots">
             ${s.stoneAlloc.map((a,i)=>`
@@ -916,9 +990,9 @@ function render(){
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="depot">
                 ${depotOptionsHtml('stoneDepots', a.depot)}
               </select>
-              <input type="number" min="0" max="${reqQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="qty">
+              <input type="number" min="0" max="${tQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
-            <span class="alloc-total ${(s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==reqQty)?'mismatch':''}">計 ${s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${reqQty}</span>
+            <span class="alloc-total ${(s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==tQty)?'mismatch':''}">計 ${s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${tQty}</span>
           </div>
           <div class="sample-meta">
             <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.stoneRequestStore || ''}" data-store="${s.id}" data-field="stoneRequestStore">
@@ -926,9 +1000,12 @@ function render(){
           </div>
         </div>
         <div class="progress-row">
-          <div class="label">サンプルオプション ${sampleCount}/${reqQty}</div>
+          <div class="label">サンプルオプション ${sampleCount}/${pQty}</div>
+          <div class="chips-row">
           <div class="chips">
             ${s.sampleDone.map((v,i)=>`<div class="chip square ${v?'on':''}" data-store="${s.id}" data-type="sample" data-idx="${i}"></div>`).join('')}
+          </div>
+          <div class="qty-stepper" title="手配数"><button type="button" class="qty-step" data-store="${s.id}" data-type="sample" data-delta="-1">−</button><input type="number" min="1" class="required-qty-input" value="${pQty}" data-store="${s.id}" data-type="sample"><button type="button" class="qty-step" data-store="${s.id}" data-type="sample" data-delta="1">＋</button><span class="qty-unit">台</span></div>
           </div>
           <div class="alloc-slots">
             ${s.sampleAlloc.map((a,i)=>`
@@ -936,9 +1013,9 @@ function render(){
               <select class="depot-select mini-select" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="depot">
                 ${depotOptionsHtml('sampleDepots', a.depot)}
               </select>
-              <input type="number" min="0" max="${reqQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="qty">
+              <input type="number" min="0" max="${pQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="sampleAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
-            <span class="alloc-total ${(s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==reqQty)?'mismatch':''}">計 ${s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${reqQty}</span>
+            <span class="alloc-total ${(s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==pQty)?'mismatch':''}">計 ${s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${pQty}</span>
           </div>
           <div class="sample-meta">
             <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.sampleRequestStore || ''}" data-store="${s.id}" data-field="sampleRequestStore">
@@ -958,6 +1035,10 @@ function render(){
           <option value="発送済み" ${s.shipStatus==='発送済み'?'selected':''}>発送済み</option>
           <option value="到着済み" ${s.shipStatus==='到着済み'?'selected':''}>到着済み</option>
         </select>
+        <label class="date-field">
+          <span class="date-field-label">発送数</span>
+          <input type="number" min="0" class="ship-count-input" placeholder="0" value="${s.shipCount||''}" data-store="${s.id}">
+        </label>
       </div>
 
       <div class="status-note-row">
@@ -1122,6 +1203,13 @@ function attachHandlers(){
     });
   });
 
+  document.querySelectorAll('.depot-tab').forEach(el=>{
+    el.addEventListener('click', e=>{
+      depotTabs[e.target.dataset.depotkey] = e.target.dataset.tab;
+      render();
+    });
+  });
+
   document.querySelectorAll('.store-tab').forEach(el=>{
     el.addEventListener('click', e=>{
       activeTab = e.target.dataset.tab;
@@ -1138,7 +1226,7 @@ function attachHandlers(){
     state.stores.push({
       id:newId('store'), name:name,
       open: openEl.value.trim(), delivery: deliveryEl.value.trim(),
-      requiredQty:4,
+      requiredQty:4, colorQty:4, stoneQty:4, sampleQty:4,
       colorAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
       stoneAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
       sampleAlloc:[{depot:'',qty:0},{depot:'',qty:0}],
@@ -1186,8 +1274,8 @@ function attachHandlers(){
   document.querySelectorAll('.qty-input').forEach(el=>{
     el.addEventListener('change', e=>{
       const s = state.stores.find(x=>x.id===e.target.dataset.store);
-      const reqQty = s.requiredQty || 4;
       const allocField = e.target.dataset.alloc;
+      const reqQty = qtyOf(s, typeOfAllocField(allocField));
       const slot = s[allocField][Number(e.target.dataset.slot)];
       let v = Number(e.target.value) || 0;
       if(v < 0) v = 0;
@@ -1211,6 +1299,16 @@ function attachHandlers(){
     });
   });
 
+  document.querySelectorAll('.ship-count-input').forEach(el=>{
+    el.addEventListener('change', e=>{
+      const s = state.stores.find(x=>x.id===e.target.dataset.store);
+      let v = Number(e.target.value) || 0;
+      if(v < 0) v = 0;
+      s.shipCount = v;
+      saveState();
+    });
+  });
+
   document.querySelectorAll('.ship-status-select').forEach(el=>{
     el.addEventListener('change', e=>{
       const s = state.stores.find(x=>x.id===e.target.dataset.store);
@@ -1220,21 +1318,31 @@ function attachHandlers(){
     });
   });
 
+  function setTypeQty(s, t, v){
+    if(v < 1) v = 1;
+    // 他の種類の台数も現在値で確定させてから、この種類だけ変更する
+    ['color','stone','sample'].forEach(k=>{ s[k+'Qty'] = qtyOf(s,k); });
+    s[t+'Qty'] = v;
+    s[t+'Done'] = resizeBoolArray(s[t+'Done'], v);
+    // 割り振り数量が新しい台数を超えていたら切り詰める
+    s[t+'Alloc'].forEach(a=>{ if(Number(a.qty||0) > v) a.qty = v; });
+    saveState();
+    render();
+  }
+
   document.querySelectorAll('.required-qty-input').forEach(el=>{
     el.addEventListener('change', e=>{
       const s = state.stores.find(x=>x.id===e.target.dataset.store);
-      let v = Number(e.target.value) || 1;
-      if(v < 1) v = 1;
-      s.requiredQty = v;
-      s.colorDone = resizeBoolArray(s.colorDone, v);
-      s.stoneDone = resizeBoolArray(s.stoneDone, v);
-      s.sampleDone = resizeBoolArray(s.sampleDone, v);
-      // 割り振り数量が新しい必要台数を超えていたら切り詰める
-      ['colorAlloc','stoneAlloc','sampleAlloc'].forEach(f=>{
-        s[f].forEach(a=>{ if(Number(a.qty||0) > v) a.qty = v; });
-      });
-      saveState();
-      render();
+      setTypeQty(s, e.target.dataset.type, Number(e.target.value) || 1);
+    });
+  });
+
+  document.querySelectorAll('.qty-step').forEach(el=>{
+    el.addEventListener('click', e=>{
+      const b = e.currentTarget;
+      const s = state.stores.find(x=>x.id===b.dataset.store);
+      const t = b.dataset.type;
+      setTypeQty(s, t, qtyOf(s,t) + Number(b.dataset.delta));
     });
   });
 
