@@ -506,13 +506,13 @@ const STORAGE_KEY = 'chart-tracker-state-v1';
 
 // ▼▼▼ ここにFirebaseの設定値を貼り付けてください（手順はREADME参照） ▼▼▼
 const firebaseConfig = {
-  apiKey: "AIzaSyAdlyFQvZqXI3eF4HWHN4_qUdtb-LCgVGY",
-  authDomain: "chart-tracker-d6909.firebaseapp.com",
-  databaseURL: "https://chart-tracker-d6909-default-rtdb.firebaseio.com",
-  projectId: "chart-tracker-d6909",
-  storageBucket: "chart-tracker-d6909.firebasestorage.app",
-  messagingSenderId: "648830849134",
-  appId: "1:648830849134:web:40c510d88994aee9dbd67f"
+  apiKey: "ここに貼り付け",
+  authDomain: "ここに貼り付け",
+  databaseURL: "ここに貼り付け",
+  projectId: "ここに貼り付け",
+  storageBucket: "ここに貼り付け",
+  messagingSenderId: "ここに貼り付け",
+  appId: "ここに貼り付け"
 };
 // ▲▲▲ ここまで ▲▲▲
 
@@ -642,6 +642,7 @@ function migrateState(loaded){
     if(s.shipDate === undefined) s.shipDate = '';
     if(s.shipStatus === undefined) s.shipStatus = '未発送';
     if(s.shipCount === undefined) s.shipCount = 0;
+    ['shipCountColor','shipCountStone','shipCountSample'].forEach(k=>{ if(s[k] === undefined) s[k] = 0; });
     if(s.requiredQty === undefined || !Number(s.requiredQty)) s.requiredQty = 4;
     ['color','stone','sample'].forEach(t=>{
       if(!Number(s[t+'Qty'])) s[t+'Qty'] = s.requiredQty;
@@ -771,9 +772,19 @@ function storageRowHtml(storageKey, unitNote){
 
 function depotRowHtml(depotKey, allocField, unitNote, showRequestFields){
   const alloc = computeAllocation(depotKey, allocField);
-  const totalStock = state[depotKey].reduce((sum,d)=>sum+Number(d.stock||0),0);
-  const totalAlloc = Object.values(alloc).reduce((a,b)=>a+b,0);
-  const totalRequired = state.stores.reduce((sum,s)=>sum+qtyOf(s, typeOfAllocField(allocField)),0);
+  // 振分完了（在庫>0で残り0）の依頼店舗は、合計在庫・必要数・振分済み合計から除外する
+  const isAllocDone = d => Number(d.stock||0) > 0 && Number(d.stock||0) - (alloc[d.id]||0) === 0;
+  const activeDepots = state[depotKey].filter(d=>!isAllocDone(d));
+  const doneDepots = state[depotKey].filter(isAllocDone);
+  const totalStock = activeDepots.reduce((sum,d)=>sum+Number(d.stock||0),0);
+  const doneStockSum = doneDepots.reduce((sum,d)=>sum+Number(d.stock||0),0);
+  const totalAlloc = activeDepots.reduce((sum,d)=>sum+(alloc[d.id]||0),0);
+  const doneAllocSum = doneDepots.reduce((sum,d)=>sum+(alloc[d.id]||0),0);
+  // 必要数 = 各店舗の台数のうち、まだ振り分けていない数の合計
+  const totalRequired = state.stores.reduce((sum,s)=>{
+    const assigned = (s[allocField]||[]).reduce((a,x)=>a+Number(x.qty||0),0);
+    return sum + Math.max(0, qtyOf(s, typeOfAllocField(allocField)) - assigned);
+  },0);
   const cardItems = state[depotKey].map(d=>{
     const stock = Number(d.stock||0);
     const used = alloc[d.id]||0;
@@ -837,9 +848,10 @@ function depotRowHtml(depotKey, allocField, unitNote, showRequestFields){
       </div>` : ''}
     </div>
     <div class="totals-bar">
-      <span>${unitNote}合計在庫 <b>${totalStock}</b></span>
-      <span>${unitNote}必要数(全店) <b>${totalRequired}</b></span>
+      <span>${unitNote}合計在庫 <b>${totalStock}</b>${doneStockSum>0 ? `<span style="color:var(--muted);font-size:13px;">（全${totalStock+doneStockSum} − 振分完了${doneStockSum}）</span>` : ''}</span>
+      <span>${unitNote}必要数(未振分) <b>${totalRequired}</b></span>
       <span>振分済み合計 <b>${totalAlloc}</b></span>
+      <span style="color:var(--muted);font-size:13px;">※ 合計在庫・振分済みは振分完了分（${doneDepots.length}件）を除く</span>
     </div>
   `;
 }
@@ -971,10 +983,6 @@ function render(){
             </div>`).join('')}
             <span class="alloc-total ${(s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==cQty)?'mismatch':''}">計 ${s.colorAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${cQty}</span>
           </div>
-          <div class="sample-meta">
-            <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.colorRequestStore || ''}" data-store="${s.id}" data-field="colorRequestStore">
-            <input type="text" class="mini-input" placeholder="依頼者" value="${s.colorRequester || ''}" data-store="${s.id}" data-field="colorRequester">
-          </div>
         </div>
         <div class="progress-row">
           <div class="label">ストーンチャート ${stoneCount}/${tQty}</div>
@@ -993,10 +1001,6 @@ function render(){
               <input type="number" min="0" max="${tQty}" class="qty-input" value="${a.qty}" data-store="${s.id}" data-alloc="stoneAlloc" data-slot="${i}" data-part="qty">
             </div>`).join('')}
             <span class="alloc-total ${(s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==tQty)?'mismatch':''}">計 ${s.stoneAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${tQty}</span>
-          </div>
-          <div class="sample-meta">
-            <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.stoneRequestStore || ''}" data-store="${s.id}" data-field="stoneRequestStore">
-            <input type="text" class="mini-input" placeholder="依頼者" value="${s.stoneRequester || ''}" data-store="${s.id}" data-field="stoneRequester">
           </div>
         </div>
         <div class="progress-row">
@@ -1017,10 +1021,6 @@ function render(){
             </div>`).join('')}
             <span class="alloc-total ${(s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)!==pQty)?'mismatch':''}">計 ${s.sampleAlloc.reduce((sum,a)=>sum+Number(a.qty||0),0)}/${pQty}</span>
           </div>
-          <div class="sample-meta">
-            <input type="text" class="mini-input" placeholder="作成依頼店舗" value="${s.sampleRequestStore || ''}" data-store="${s.id}" data-field="sampleRequestStore">
-            <input type="text" class="mini-input" placeholder="依頼者" value="${s.sampleRequester || ''}" data-store="${s.id}" data-field="sampleRequester">
-          </div>
         </div>
       </div>
 
@@ -1036,8 +1036,16 @@ function render(){
           <option value="到着済み" ${s.shipStatus==='到着済み'?'selected':''}>到着済み</option>
         </select>
         <label class="date-field">
-          <span class="date-field-label">発送数</span>
-          <input type="number" min="0" class="ship-count-input" placeholder="0" value="${s.shipCount||''}" data-store="${s.id}">
+          <span class="date-field-label">カラー発送数</span>
+          <input type="number" min="0" class="ship-count-input" placeholder="0" value="${s.shipCountColor||''}" data-store="${s.id}" data-field="shipCountColor">
+        </label>
+        <label class="date-field">
+          <span class="date-field-label">ストーン発送数</span>
+          <input type="number" min="0" class="ship-count-input" placeholder="0" value="${s.shipCountStone||''}" data-store="${s.id}" data-field="shipCountStone">
+        </label>
+        <label class="date-field">
+          <span class="date-field-label">サンプル発送数</span>
+          <input type="number" min="0" class="ship-count-input" placeholder="0" value="${s.shipCountSample||''}" data-store="${s.id}" data-field="shipCountSample">
         </label>
       </div>
 
@@ -1304,7 +1312,7 @@ function attachHandlers(){
       const s = state.stores.find(x=>x.id===e.target.dataset.store);
       let v = Number(e.target.value) || 0;
       if(v < 0) v = 0;
-      s.shipCount = v;
+      s[e.target.dataset.field] = v;
       saveState();
     });
   });
